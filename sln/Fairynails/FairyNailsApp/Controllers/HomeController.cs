@@ -5,9 +5,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Fairynails.Models;
+using FairyNailsApp.Models;
 
-namespace Fairynails.Controllers
+namespace FairyNailsApp.Controllers
 {
     public class HomeController : Controller
     {

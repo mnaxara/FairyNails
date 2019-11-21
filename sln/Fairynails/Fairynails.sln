@@ -3,15 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29503.13
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fairynails", "Fairynails\Fairynails.csproj", "{3D6DBE45-B8B8-4061-9C1A-B99F7DCB2DC7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FairyNailsApp", "FairyNailsApp\FairyNailsApp.csproj", "{5211F0D2-87DB-4CD5-92FD-5FAAD0720ED2}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "00-Local", "00-Local", "{E3A8A1F5-F2AA-4E87-842C-5CC6ACF02B24}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01-Application", "01-Application", "{0799DE1F-CA04-4253-9516-D5D3C517FE83}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01-Application", "01-Application", "{B4699DC7-EA94-46A7-81BA-7C226C468693}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "02-Business", "02-Business", "{C44C3036-1519-44AB-B37F-80F193A7B5AA}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "02-Business", "02-Business", "{D61D610A-49B6-4E97-B8EF-B34A7612CC33}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FairyNails.Service", "FairyNails.Service\FairyNails.Service.csproj", "{C9AD9628-A983-4541-9BF2-E8492599CB2A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FairyNails.Service", "FairyNails.Service\FairyNails.Service.csproj", "{A458A0F9-D914-4BEB-9723-CA97D3640DE5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,23 +17,23 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{3D6DBE45-B8B8-4061-9C1A-B99F7DCB2DC7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3D6DBE45-B8B8-4061-9C1A-B99F7DCB2DC7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3D6DBE45-B8B8-4061-9C1A-B99F7DCB2DC7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3D6DBE45-B8B8-4061-9C1A-B99F7DCB2DC7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C9AD9628-A983-4541-9BF2-E8492599CB2A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C9AD9628-A983-4541-9BF2-E8492599CB2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C9AD9628-A983-4541-9BF2-E8492599CB2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C9AD9628-A983-4541-9BF2-E8492599CB2A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5211F0D2-87DB-4CD5-92FD-5FAAD0720ED2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5211F0D2-87DB-4CD5-92FD-5FAAD0720ED2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5211F0D2-87DB-4CD5-92FD-5FAAD0720ED2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5211F0D2-87DB-4CD5-92FD-5FAAD0720ED2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A458A0F9-D914-4BEB-9723-CA97D3640DE5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A458A0F9-D914-4BEB-9723-CA97D3640DE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A458A0F9-D914-4BEB-9723-CA97D3640DE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A458A0F9-D914-4BEB-9723-CA97D3640DE5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{3D6DBE45-B8B8-4061-9C1A-B99F7DCB2DC7} = {B4699DC7-EA94-46A7-81BA-7C226C468693}
-		{C9AD9628-A983-4541-9BF2-E8492599CB2A} = {D61D610A-49B6-4E97-B8EF-B34A7612CC33}
+		{5211F0D2-87DB-4CD5-92FD-5FAAD0720ED2} = {0799DE1F-CA04-4253-9516-D5D3C517FE83}
+		{A458A0F9-D914-4BEB-9723-CA97D3640DE5} = {C44C3036-1519-44AB-B37F-80F193A7B5AA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {64E2A209-3F23-473D-BFD6-F86E475435EE}
+		SolutionGuid = {88CA034E-AACF-4071-8769-8B87A5DBE9AF}
 	EndGlobalSection
 EndGlobal

@@ -1,6 +1,6 @@
 using System;
 
-namespace Fairynails.Models
+namespace FairyNailsApp.Models
 {
     public class ErrorViewModel
     {
