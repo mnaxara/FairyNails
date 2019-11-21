@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace FairyNailsApp.Entity
+namespace FairyNails.Service.Entity
 {
     public partial class TPrestation
     {

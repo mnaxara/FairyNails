@@ -1,9 +1,9 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace FairyNailsApp.Migrations
+namespace FairyNails.Service.Migrations
 {
-    public partial class AddUser : Migration
+    public partial class Init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -178,7 +178,7 @@ namespace FairyNailsApp.Migrations
                 table: "AspNetRoles",
                 column: "NormalizedName",
                 unique: true,
-                filter: "[NormalizedName] IS NOT NULL");
+                filter: "([NormalizedName] IS NOT NULL)");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetUserClaims_UserId",
@@ -205,7 +205,7 @@ namespace FairyNailsApp.Migrations
                 table: "AspNetUsers",
                 column: "NormalizedUserName",
                 unique: true,
-                filter: "[NormalizedUserName] IS NOT NULL");
+                filter: "([NormalizedUserName] IS NOT NULL)");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
