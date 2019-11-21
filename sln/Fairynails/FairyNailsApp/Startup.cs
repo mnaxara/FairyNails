@@ -6,6 +6,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using FairyNails.Service.Entity;
+using FairyNailsApp.Models;
+using FairyNails.Service;
 
 namespace FairyNailsApp
 {
@@ -25,7 +27,7 @@ namespace FairyNailsApp
                 options.UseSqlServer(
                     Configuration.GetConnectionString("FairynailConnection"),
                     b => b.MigrationsAssembly("FairyNails.Service")));
-            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<FairynailsContext>();
             services.AddControllersWithViews();
             services.AddRazorPages();

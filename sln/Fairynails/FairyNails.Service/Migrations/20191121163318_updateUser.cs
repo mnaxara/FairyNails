@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace FairyNails.Service.Migrations
 {
-    public partial class Init : Migration
+    public partial class updateUser : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -39,27 +39,14 @@ namespace FairyNails.Service.Migrations
                     TwoFactorEnabled = table.Column<bool>(nullable: false),
                     LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
                     LockoutEnabled = table.Column<bool>(nullable: false),
-                    AccessFailedCount = table.Column<int>(nullable: false)
+                    AccessFailedCount = table.Column<int>(nullable: false),
+                    Name = table.Column<string>(nullable: true),
+                    FirstName = table.Column<string>(nullable: true),
+                    Adress = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "T_PRESTATION",
-                columns: table => new
-                {
-                    Id_prestation = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Nom = table.Column<string>(maxLength: 50, nullable: false),
-                    Description = table.Column<string>(maxLength: 100, nullable: false),
-                    Prix = table.Column<decimal>(type: "money", nullable: false),
-                    Duree = table.Column<DateTime>(type: "datetime", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_T_PRESTATION", x => x.Id_prestation);
                 });
 
             migrationBuilder.CreateTable(
@@ -178,7 +165,7 @@ namespace FairyNails.Service.Migrations
                 table: "AspNetRoles",
                 column: "NormalizedName",
                 unique: true,
-                filter: "([NormalizedName] IS NOT NULL)");
+                filter: "[NormalizedName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetUserClaims_UserId",
@@ -205,7 +192,7 @@ namespace FairyNails.Service.Migrations
                 table: "AspNetUsers",
                 column: "NormalizedUserName",
                 unique: true,
-                filter: "([NormalizedUserName] IS NOT NULL)");
+                filter: "[NormalizedUserName] IS NOT NULL");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -224,9 +211,6 @@ namespace FairyNails.Service.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
-
-            migrationBuilder.DropTable(
-                name: "T_PRESTATION");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
