@@ -21,7 +21,7 @@ namespace FairyNails.Service.RendezVousServices
 
         #region methods
 
-        public List<T> GetAllRendezVous<T>() where T : IRendezVous, new()
+        public List<T> GetAllRendezVous<T>() where T : IRendezVous, new();
         public bool AddRendezVous(TRendezVous rdv);
         public bool DeleteRendezVous(Int32 idRdv);
 
