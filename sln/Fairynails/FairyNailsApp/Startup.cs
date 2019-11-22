@@ -8,6 +8,7 @@ using Microsoft.Extensions.Hosting;
 using FairyNails.Service.Entity;
 using FairyNailsApp.Models;
 using FairyNails.Service;
+using FairyNails.Service.RendezVousServices;
 
 namespace FairyNailsApp
 {
@@ -31,6 +32,9 @@ namespace FairyNailsApp
                 .AddEntityFrameworkStores<FairynailsContext>();
             services.AddControllersWithViews();
             services.AddRazorPages();
+
+            // Add business service
+            services.AddScoped<IRendezVousService,RendezVousService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
