@@ -27,7 +27,7 @@ namespace FairyNailsApp
                 options.UseSqlServer(
                     Configuration.GetConnectionString("FairynailConnection"),
                     b => b.MigrationsAssembly("FairyNails.Service")));
-            services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            services.AddDefaultIdentity<ApplicationUser>()
                 .AddEntityFrameworkStores<FairynailsContext>();
             services.AddControllersWithViews();
             services.AddRazorPages();
