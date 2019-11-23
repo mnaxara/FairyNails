@@ -14,7 +14,7 @@ namespace FairyNails.Service.Entity
         public string Nom { get; set; }
         public string Description { get; set; }
         public decimal Prix { get; set; }
-        public DateTime Duree { get; set; }
+        public TimeSpan Duree { get; set; }
 
         public virtual ICollection<TRendezVousHasPrestation> TRendezVousHasPrestation { get; set; }
     }

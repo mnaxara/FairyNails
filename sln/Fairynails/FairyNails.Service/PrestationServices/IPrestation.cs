@@ -8,23 +8,22 @@ using System.Threading;
 using System.Threading.Tasks;
 
 
-namespace FairyNails.Service.RendezVousServices
+namespace FairyNails.Service.PrestationServices
 {
     /// <summary>
     /// A CSInterface definition.
     /// </summary>
-    public interface IRendezVous
+    public interface IPrestation
     {
         #region properties
-
-        #endregion
-        public int IdRdv { get; set; }
-        public DateTime DateRdv { get; set; }
-        public decimal PrixTotal { get; set; }
-        public TimeSpan DureeTotal { get; set; }
-        public string IdClient { get; set; }
-        public ApplicationUser IdClientNavigation { get; set; }
+        public int IdPrestation { get; set; }
+        public string Nom { get; set; }
+        public string Description { get; set; }
+        public decimal Prix { get; set; }
+        public TimeSpan Duree { get; set; }
         public ICollection<TRendezVousHasPrestation> TRendezVousHasPrestation { get; set; }
+        #endregion
+
         #region methods
 
         #endregion

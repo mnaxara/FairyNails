@@ -9,6 +9,7 @@ using FairyNails.Service.Entity;
 using FairyNailsApp.Models;
 using FairyNails.Service;
 using FairyNails.Service.RendezVousServices;
+using FairyNails.Service.PrestationServices;
 
 namespace FairyNailsApp
 {
@@ -35,6 +36,7 @@ namespace FairyNailsApp
 
             // Add business service
             services.AddScoped<IRendezVousService,RendezVousService>();
+            services.AddScoped<IPrestationService,PrestationService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
