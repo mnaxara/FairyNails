@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using FairyNails.Service.RendezVousServices;
 using Microsoft.AspNetCore.Mvc;
 using FairyNails.Service.PrestationServices;
-using FairyNailsApp.Models;
+using FairyNailsApp.Models.RendezVous;
 
 namespace FairyNailsApp.Controllers
 {
@@ -28,13 +28,29 @@ namespace FairyNailsApp.Controllers
 
         public IActionResult Calendar()
         {
-            CalendarViewModel model = new CalendarViewModel()
-            {
-                rendezVous = new RendezVousViewModel(),
-                prestations = _prestationService.GetAllPrestations<PrestationViewModel>()
-            };
 
-            return View(model);
+            RendezVousViewModel rendezVous = new RendezVousViewModel()
+            {
+                Prestations = _prestationService.GetAllPrestations<PrestationViewModel>()
+            };
+   
+            return View(rendezVous);
+        }
+
+        [HttpPost]
+        public IActionResult SaveRendezVous(RendezVousViewModel rdvData)
+        {
+            List<Int32> prestationChosenId = new List<Int32>();
+            foreach (var prestation in rdvData.Prestations)
+            {
+                if(prestation.IsChosen)
+                {
+                    prestationChosenId.Add(prestation.IdPrestation);
+                }
+            }
+
+            _rendezVousService.AddRendezVous(rdvData.IdClient, prestationChosenId, rdvData.DateCode);
+            return RedirectToAction("Calendar");
         }
     }
 }

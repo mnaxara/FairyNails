@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace FairyNailsApp.Models
+namespace FairyNailsApp.Models.RendezVous
 {
     public class PrestationViewModel : IPrestation
     {
@@ -14,6 +14,6 @@ namespace FairyNailsApp.Models
         public string Description { get; set; }
         public decimal Prix { get; set; }
         public TimeSpan Duree { get; set; }
-        public ICollection<TRendezVousHasPrestation> TRendezVousHasPrestation { get; set ; }
+        public bool IsChosen { get; set; }
     }
 }

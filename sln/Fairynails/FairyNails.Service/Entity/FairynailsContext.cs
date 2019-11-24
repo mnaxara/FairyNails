@@ -46,7 +46,7 @@ namespace FairyNails.Service.Entity
                     .IsRequired()
                     .HasMaxLength(100);
 
-                entity.Property(e => e.Duree).HasColumnType("timespan");
+                entity.Property(e => e.Duree).HasColumnType("time");
 
                 entity.Property(e => e.Nom)
                     .IsRequired()
@@ -65,7 +65,7 @@ namespace FairyNails.Service.Entity
 
                 entity.Property(e => e.DateRdv).HasColumnType("datetime");
 
-                entity.Property(e => e.DureeTotal).HasColumnType("timespan");
+                entity.Property(e => e.DureeTotal).HasColumnType("time");
 
                 entity.Property(e => e.IdClient)
                     .IsRequired()
@@ -74,7 +74,7 @@ namespace FairyNails.Service.Entity
 
                 entity.Property(e => e.PrixTotal).HasColumnType("money");
 
-                entity.Property(e => e.IdRdv).HasColumnName("validate");
+                entity.Property(e => e.Validate).HasColumnName("validate");
 
                 entity.HasOne(d => d.IdClientNavigation)
                     .WithMany(p => p.TRendezVous)

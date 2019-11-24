@@ -1,4 +1,5 @@
 ﻿using FairyNails.Service.Entity;
+using FairyNails.Service.PrestationServices;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -22,7 +23,7 @@ namespace FairyNails.Service.RendezVousServices
         #region methods
 
         public List<T> GetAllRendezVous<T>() where T : IRendezVous, new();
-        public bool AddRendezVous(TRendezVous rdv);
+        public bool AddRendezVous(String idUser, List<Int32> prestationsId, String dateCode);
         public bool DeleteRendezVous(Int32 idRdv);
 
         #endregion

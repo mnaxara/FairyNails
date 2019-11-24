@@ -40,8 +40,7 @@ namespace FairyNails.Service.PrestationServices
                     Description = item.Description,
                     Duree = item.Duree,
                     Nom = item.Nom,
-                    Prix = item.Prix,
-                    TRendezVousHasPrestation = item.TRendezVousHasPrestation
+                    Prix = item.Prix
                 })
                 .ToList();
         }

@@ -21,7 +21,6 @@ namespace FairyNails.Service.PrestationServices
         public string Description { get; set; }
         public decimal Prix { get; set; }
         public TimeSpan Duree { get; set; }
-        public ICollection<TRendezVousHasPrestation> TRendezVousHasPrestation { get; set; }
         #endregion
 
         #region methods

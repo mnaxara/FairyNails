@@ -6,6 +6,8 @@ using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 using FairyNails.Service.Entity;
+using FairyNails.Service.PrestationServices;
+using Microsoft.EntityFrameworkCore;
 
 namespace FairyNails.Service.RendezVousServices
 {
@@ -32,9 +34,34 @@ namespace FairyNails.Service.RendezVousServices
 
         #region methods
 
-        public bool AddRendezVous(TRendezVous rdv)
+        public bool AddRendezVous(String idUser, List<Int32> prestationsId, String dateCode)
         {
-            _context.Add(rdv);
+            String[] dateCodeSplit = dateCode.Split('-');
+            DateTime dateRdv = new DateTime(
+                Int32.Parse(dateCodeSplit[0]),
+                Int32.Parse(dateCodeSplit[1]),
+                Int32.Parse(dateCodeSplit[2]),
+                Int32.Parse(dateCodeSplit[3]),
+                0, 0);
+
+            TRendezVous rdv = new TRendezVous()
+            {
+                DateRdv = dateRdv,
+                IdClient = idUser,
+                DureeTotal = new TimeSpan(0, 20, 20),
+                PrixTotal = 200,
+                Validate = false,
+            };
+
+            List<TRendezVousHasPrestation > link = new List<TRendezVousHasPrestation>();
+            foreach (var prestationId in prestationsId)
+            {
+                link.Add(new TRendezVousHasPrestation() { IdRdvNavigation = rdv, IdPrestation = prestationId });
+            }
+            _context.AddRange(link);
+            _context.SaveChanges();
+
+
             return true;
         }
 
