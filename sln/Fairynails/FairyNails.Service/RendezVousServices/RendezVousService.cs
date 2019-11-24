@@ -41,9 +41,7 @@ namespace FairyNails.Service.RendezVousServices
             TRendezVous rdv = CreateRendezVous(dateRdv, idUser);
 
             List<TRendezVousHasPrestation> link = CreateRendezVousPrestationsLink(prestationsId, rdv);
-
-            rdv.TRendezVousHasPrestation = link;
-            _context.AddRange(rdv);
+            _context.AddRange(link);
             _context.SaveChanges();
 
             var test = _context.TRendezVous.ToList();
@@ -78,7 +76,7 @@ namespace FairyNails.Service.RendezVousServices
             return new TRendezVous()
             {
                 DateRdv = dateRdv,
-                IdClient = idUser,
+                IdClientNavigation = _context.Users.Find(idUser),
                 PrixTotal = 200,
                 Validate = false,
             };
