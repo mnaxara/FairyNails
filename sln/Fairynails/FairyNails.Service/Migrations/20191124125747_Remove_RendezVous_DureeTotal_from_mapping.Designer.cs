@@ -4,14 +4,16 @@ using FairyNails.Service.Entity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace FairyNails.Service.Migrations
 {
     [DbContext(typeof(FairynailsContext))]
-    partial class FairynailsContextModelSnapshot : ModelSnapshot
+    [Migration("20191124125747_Remove_RendezVous_DureeTotal_from_mapping")]
+    partial class Remove_RendezVous_DureeTotal_from_mapping
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

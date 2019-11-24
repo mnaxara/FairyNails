@@ -36,31 +36,17 @@ namespace FairyNails.Service.RendezVousServices
 
         public bool AddRendezVous(String idUser, List<Int32> prestationsId, String dateCode)
         {
-            String[] dateCodeSplit = dateCode.Split('-');
-            DateTime dateRdv = new DateTime(
-                Int32.Parse(dateCodeSplit[0]),
-                Int32.Parse(dateCodeSplit[1]),
-                Int32.Parse(dateCodeSplit[2]),
-                Int32.Parse(dateCodeSplit[3]),
-                0, 0);
+            DateTime dateRdv = ConvertTimeCodeInDateTime(dateCode);
 
-            TRendezVous rdv = new TRendezVous()
-            {
-                DateRdv = dateRdv,
-                IdClient = idUser,
-                DureeTotal = new TimeSpan(0, 20, 20),
-                PrixTotal = 200,
-                Validate = false,
-            };
+            TRendezVous rdv = CreateRendezVous(dateRdv, idUser);
 
-            List<TRendezVousHasPrestation > link = new List<TRendezVousHasPrestation>();
-            foreach (var prestationId in prestationsId)
-            {
-                link.Add(new TRendezVousHasPrestation() { IdRdvNavigation = rdv, IdPrestation = prestationId });
-            }
-            _context.AddRange(link);
+            List<TRendezVousHasPrestation> link = CreateRendezVousPrestationsLink(prestationsId, rdv);
+
+            rdv.TRendezVousHasPrestation = link;
+            _context.AddRange(rdv);
             _context.SaveChanges();
 
+            var test = _context.TRendezVous.ToList();
 
             return true;
         }
@@ -85,6 +71,40 @@ namespace FairyNails.Service.RendezVousServices
                     IdClientNavigation = item.IdClientNavigation
                 })
                 .ToList();
+        }
+
+        private TRendezVous CreateRendezVous (DateTime dateRdv, String idUser)
+        {
+            return new TRendezVous()
+            {
+                DateRdv = dateRdv,
+                IdClient = idUser,
+                PrixTotal = 200,
+                Validate = false,
+            };
+        }
+
+        private List<TRendezVousHasPrestation> CreateRendezVousPrestationsLink (List<Int32> prestationsId, TRendezVous rdv)
+        {
+            List<TRendezVousHasPrestation> link = new List<TRendezVousHasPrestation>();
+            foreach (var prestationId in prestationsId)
+            {
+                TPrestation prestation = _context.TPrestation.Find(prestationId);
+                link.Add(new TRendezVousHasPrestation() { IdRdvNavigation = rdv, IdPrestationNavigation = prestation });
+            }
+
+            return link;
+        }
+
+        private DateTime ConvertTimeCodeInDateTime (String dateCode)
+        {
+            String[] dateCodeSplit = dateCode.Split('-');
+            return new DateTime(
+                Int32.Parse(dateCodeSplit[0]),
+                Int32.Parse(dateCodeSplit[1]),
+                Int32.Parse(dateCodeSplit[2]),
+                Int32.Parse(dateCodeSplit[3]),
+                0, 0);
         }
 
         #endregion

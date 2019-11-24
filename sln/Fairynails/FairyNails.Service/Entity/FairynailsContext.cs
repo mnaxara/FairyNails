@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Configuration;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -64,8 +65,6 @@ namespace FairyNails.Service.Entity
                 entity.Property(e => e.IdRdv).HasColumnName("Id_rdv");
 
                 entity.Property(e => e.DateRdv).HasColumnType("datetime");
-
-                entity.Property(e => e.DureeTotal).HasColumnType("time");
 
                 entity.Property(e => e.IdClient)
                     .IsRequired()

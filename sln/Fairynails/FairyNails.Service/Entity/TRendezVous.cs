@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 
 namespace FairyNails.Service.Entity
 {
@@ -13,7 +15,13 @@ namespace FairyNails.Service.Entity
         public int IdRdv { get; set; }
         public DateTime DateRdv { get; set; }
         public decimal PrixTotal { get; set; }
-        public TimeSpan DureeTotal { get; set; }
+        [NotMapped]
+        public TimeSpan DureeTotal {
+            get
+            {
+                return this.TRendezVousHasPrestation.Aggregate(new TimeSpan(0,0,0), (total, item) => total.Add(item.IdPrestationNavigation.Duree));
+            }
+            private set { } }
         public string IdClient { get; set; }
         public bool Validate { get; set; }
 
