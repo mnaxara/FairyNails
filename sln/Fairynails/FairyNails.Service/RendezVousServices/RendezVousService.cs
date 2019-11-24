@@ -44,8 +44,6 @@ namespace FairyNails.Service.RendezVousServices
             _context.AddRange(link);
             _context.SaveChanges();
 
-            var test = _context.TRendezVous.ToList();
-
             return true;
         }
 
@@ -71,6 +69,14 @@ namespace FairyNails.Service.RendezVousServices
                 .ToList();
         }
 
+        public List<String> GetTakenRendezVousTimeCode()
+        {
+            return _context.TRendezVous
+                .Where(item => item.Validate == true)
+                .Select(item => $"{item.DateRdv.Year}-{item.DateRdv.Month}-{item.DateRdv.Day}-{item.DateRdv.Hour}")
+                .ToList();
+        }
+
         private TRendezVous CreateRendezVous (DateTime dateRdv, String idUser)
         {
             return new TRendezVous()
@@ -78,7 +84,7 @@ namespace FairyNails.Service.RendezVousServices
                 DateRdv = dateRdv,
                 IdClientNavigation = _context.Users.Find(idUser),
                 PrixTotal = 200,
-                Validate = false,
+                Validate = true,
             };
         }
 
