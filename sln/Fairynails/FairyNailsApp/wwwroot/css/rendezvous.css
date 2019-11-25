@@ -37,8 +37,10 @@
     display: none;
 }
 
-.fa-arrow-left, .fa-arrow-right {
+.fa-arrow-alt-circle-left, .fa-arrow-alt-circle-right {
     cursor: pointer;
+    font-size: 2em;
+    color: #bb4c7b;
 }
 
 button:disabled {

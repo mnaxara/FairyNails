@@ -32,7 +32,8 @@ namespace FairyNailsApp.Controllers
             RendezVousViewModel rendezVous = new RendezVousViewModel()
             {
                 Prestations = _prestationService.GetAllPrestations<PrestationViewModel>(),
-                DateCodeRendezVousTaken = _rendezVousService.GetTakenRendezVousTimeCode()
+                DateCodeRendezVousTaken = _rendezVousService.GetTakenRendezVousTimeCode(),
+                FirstDayOfMonth = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1)
             };
    
             return View(rendezVous);

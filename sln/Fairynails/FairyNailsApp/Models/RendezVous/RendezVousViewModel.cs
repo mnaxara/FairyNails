@@ -9,5 +9,6 @@ namespace FairyNailsApp.Models.RendezVous
         public string IdClient { get; set; }
         public List<PrestationViewModel> Prestations { get; set; }
         public List<String> DateCodeRendezVousTaken { get; set; }
+        public DateTime FirstDayOfMonth { get; set; }
     }
 }

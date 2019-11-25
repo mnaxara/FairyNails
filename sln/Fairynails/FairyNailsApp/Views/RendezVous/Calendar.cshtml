@@ -1,4 +1,5 @@
 ﻿@using Microsoft.AspNetCore.Identity
+@using NetExtension;
 @inject SignInManager<ApplicationUser> _signInManager
 @inject UserManager<ApplicationUser> _userManager
 @model RendezVousViewModel
@@ -18,21 +19,20 @@
 }
 
 @{
-    String monthName = DateTime.Now.ToString("MMMM");
-    Int32 numberOfDay = DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month);
-    DateTime monthBegin = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+    String monthName = Model.FirstDayOfMonth.ToString("MMMM").FirstLetterToUppercase();
 }
 <div class="container" id="calendar">
     <div class="row mb-4">
         <div class="col-12 d-flex justify-content-center align-items-center">
-            <i class="fas fa-arrow-left mr-4" id="monthDown"></i> <h1 class="text-center">@monthName</h1> <i class="fas fa-arrow-right ml-4" id="monthUp"></i>
+            <i class="far fa-arrow-alt-circle-left mr-4" id="monthDown"></i> <h1 class="text-center">@monthName</h1> <i class="far fa-arrow-alt-circle-right ml-4" id="monthUp"></i>
         </div>
     </div>
     <div class="row">
         <div class="col-12">
             <div class="calendar">
                 @{
-                    DateTime day = monthBegin;
+                    Int32 numberOfDay = DateTime.DaysInMonth(Model.FirstDayOfMonth.Year, Model.FirstDayOfMonth.Month);
+                    DateTime day = Model.FirstDayOfMonth;
                     for (int i = 1; i <= numberOfDay; i++)
                     {
                         Double rowDouble = day.Day / 7f;
@@ -42,7 +42,7 @@
 
                         <div class="day @off" style="grid-row: @row; grid-column: @col" data-date="@day.Day-@day.Month">
                             <p class="text-center">@day.ToString("dddd") @day.Day</p>
-                            @if (day.DayOfWeek != DayOfWeek.Sunday)
+                            @if (day.DayOfWeek != DayOfWeek.Sunday && i >= DateTime.Now.Day)
                             {
                                 <div class="rdv @(Model.DateCodeRendezVousTaken.Contains($"{day.Year}-{day.Month}-{day.Day}-9") ? "unavaible" : "")" data-code="@($"{day.Year}-{day.Month}-{day.Day}-9")" data-toggle="modal" data-target="#reservations">9h00</div>
                                 <div class="rdv @(Model.DateCodeRendezVousTaken.Contains($"{day.Year}-{day.Month}-{day.Day}-11") ? "unavaible" : "")" data-code="@($"{day.Year}-{day.Month}-{day.Day}-11")" data-toggle="modal" data-target="#reservations">11h00</div>
@@ -139,5 +139,36 @@
             let splitDateCode = dateCode.split("-");
             dateInput.value = `${splitDateCode[2]}/${splitDateCode[1]}/${splitDateCode[0]} à ${splitDateCode[3]}h`;
         }));
+
+        // ******  Chnagement de mois  ***** //
+        let monthdown = document.getElementById("monthDown");
+        let monthNumberUp = @((Model.FirstDayOfMonth.Month) == 1 ? 1 : Model.FirstDayOfMonth.Month-1) ;
+        let monthNumberDown = @((Model.FirstDayOfMonth.Month) == 12 ? 12 : Model.FirstDayOfMonth.Month+1) ;
+
+        monthDown.addEventListener("click", async function (e) {
+
+            e.preventDefault();
+            let param = `month=${monthNumberDown}&year=@(Model.FirstDayOfMonth.Year)`;
+            console.log(param);
+            let response = await fetch('@Url.Action("ChangeMonth", "Ajax")' , {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
+                body: param,
+            });
+            // responseData recupere la réponse de 'response' quand elle est dispo (.text ou .json ou autre voir doc)
+            let responseData = await response.text();
+            if (response.ok === false){
+                //ERRORS
+                console.log('erreur');
+            }
+            else{
+                calendar.innerHTML = responseData;
+                monthNumberUp = monthNumberDown + 1 ;
+                monthNumberDown = monthNumberDown === 1 ? 1 : monthNumberDown - 1;
+            }
+
+        })
     </script>
 }
