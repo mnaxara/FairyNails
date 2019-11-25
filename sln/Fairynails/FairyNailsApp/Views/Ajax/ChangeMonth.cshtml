@@ -1,0 +1,40 @@
+﻿@using NetExtension;
+@model RendezVousViewModel
+@{String monthName = Model.FirstDayOfMonth.ToString("MMMM").FirstLetterToUppercase(); }
+<div class="row mb-4">
+    <div class="col-12 d-flex justify-content-center align-items-center">
+        <i class="far fa-arrow-alt-circle-left mr-4 changeMonth" id="monthDown"></i> <h1 class="text-center">@monthName @Model.FirstDayOfMonth.Year</h1> <i class="far fa-arrow-alt-circle-right ml-4 changeMonth" id="monthUp"></i>
+    </div>
+</div>
+<div class="row">
+    <div class="col-12">
+        <div class="calendar">
+            @{
+                Int32 numberOfDay = DateTime.DaysInMonth(Model.FirstDayOfMonth.Year, Model.FirstDayOfMonth.Month);
+                DateTime day = Model.FirstDayOfMonth;
+                for (int i = 1; i <= numberOfDay; i++)
+                {
+                    Double rowDouble = day.Day / 7f;
+                    Int32 row = (int)Math.Ceiling(rowDouble);
+                    Int32 col = (day.Day - (7 * (row - 1)));
+                    String off = day.DayOfWeek == DayOfWeek.Sunday ? "off" : "";
+
+                    <div class="day @off" style="grid-row: @row; grid-column: @col" data-date="@day.Day-@day.Month">
+                        <p class="text-center">@day.ToString("dddd") @day.Day</p>
+                        @if (day.DayOfWeek != DayOfWeek.Sunday && new DateTime(Model.FirstDayOfMonth.Year, Model.FirstDayOfMonth.Month, i).CompareTo(DateTime.Now) > 0)
+                        {
+                            <div class="rdv @(Model.DateCodeRendezVousTaken.Contains($"{day.Year}-{day.Month}-{day.Day}-9") ? "unavaible" : "")" data-code="@($"{day.Year}-{day.Month}-{day.Day}-9")" data-toggle="modal" data-target="#reservations">9h00</div>
+                            <div class="rdv @(Model.DateCodeRendezVousTaken.Contains($"{day.Year}-{day.Month}-{day.Day}-11") ? "unavaible" : "")" data-code="@($"{day.Year}-{day.Month}-{day.Day}-11")" data-toggle="modal" data-target="#reservations">11h00</div>
+                            <div class="rdv @(Model.DateCodeRendezVousTaken.Contains($"{day.Year}-{day.Month}-{day.Day}-13") ? "unavaible" : "")" data-code="@($"{day.Year}-{day.Month}-{day.Day}-13")" data-toggle="modal" data-target="#reservations">13h00</div>
+                            <div class="rdv @(Model.DateCodeRendezVousTaken.Contains($"{day.Year}-{day.Month}-{day.Day}-15") ? "unavaible" : "")" data-code="@($"{day.Year}-{day.Month}-{day.Day}-15")" data-toggle="modal" data-target="#reservations">15h00</div>
+                            <div class="rdv @(Model.DateCodeRendezVousTaken.Contains($"{day.Year}-{day.Month}-{day.Day}-17") ? "unavaible" : "")" data-code="@($"{day.Year}-{day.Month}-{day.Day}-17")" data-toggle="modal" data-target="#reservations">17h00</div>
+                        }
+                    </div>
+
+                    day = day.AddDays(1);
+                }
+            }
+
+        </div>
+    </div>
+</div>

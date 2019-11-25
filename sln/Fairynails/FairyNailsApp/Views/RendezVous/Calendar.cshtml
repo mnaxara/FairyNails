@@ -18,44 +18,45 @@
     <link rel="stylesheet" href="~/css/rendezvous.css" />
 }
 
-@{
-    String monthName = Model.FirstDayOfMonth.ToString("MMMM").FirstLetterToUppercase();
-}
-<div class="container" id="calendar">
-    <div class="row mb-4">
-        <div class="col-12 d-flex justify-content-center align-items-center">
-            <i class="far fa-arrow-alt-circle-left mr-4" id="monthDown"></i> <h1 class="text-center">@monthName</h1> <i class="far fa-arrow-alt-circle-right ml-4" id="monthUp"></i>
+
+<div class="container">
+    <div id="calendar">
+        @{String monthName = Model.FirstDayOfMonth.ToString("MMMM").FirstLetterToUppercase(); }
+        <div class="row mb-4">
+            <div class="col-12 d-flex justify-content-center align-items-center">
+                <i class="far fa-arrow-alt-circle-left mr-4 changeMonth" id="monthDown"></i> <h1 class="text-center">@monthName @Model.FirstDayOfMonth.Year</h1> <i class="far fa-arrow-alt-circle-right ml-4 changeMonth" id="monthUp"></i>
+            </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-12">
-            <div class="calendar">
-                @{
-                    Int32 numberOfDay = DateTime.DaysInMonth(Model.FirstDayOfMonth.Year, Model.FirstDayOfMonth.Month);
-                    DateTime day = Model.FirstDayOfMonth;
-                    for (int i = 1; i <= numberOfDay; i++)
-                    {
-                        Double rowDouble = day.Day / 7f;
-                        Int32 row = (int)Math.Ceiling(rowDouble);
-                        Int32 col = (day.Day - (7 * (row - 1)));
-                        String off = day.DayOfWeek == DayOfWeek.Sunday ? "off" : "";
+        <div class="row">
+            <div class="col-12">
+                <div class="calendar">
+                    @{
+                        Int32 numberOfDay = DateTime.DaysInMonth(Model.FirstDayOfMonth.Year, Model.FirstDayOfMonth.Month);
+                        DateTime day = Model.FirstDayOfMonth;
+                        for (int i = 1; i <= numberOfDay; i++)
+                        {
+                            Double rowDouble = day.Day / 7f;
+                            Int32 row = (int)Math.Ceiling(rowDouble);
+                            Int32 col = (day.Day - (7 * (row - 1)));
+                            String off = day.DayOfWeek == DayOfWeek.Sunday ? "off" : "";
 
-                        <div class="day @off" style="grid-row: @row; grid-column: @col" data-date="@day.Day-@day.Month">
-                            <p class="text-center">@day.ToString("dddd") @day.Day</p>
-                            @if (day.DayOfWeek != DayOfWeek.Sunday && i >= DateTime.Now.Day)
-                            {
-                                <div class="rdv @(Model.DateCodeRendezVousTaken.Contains($"{day.Year}-{day.Month}-{day.Day}-9") ? "unavaible" : "")" data-code="@($"{day.Year}-{day.Month}-{day.Day}-9")" data-toggle="modal" data-target="#reservations">9h00</div>
-                                <div class="rdv @(Model.DateCodeRendezVousTaken.Contains($"{day.Year}-{day.Month}-{day.Day}-11") ? "unavaible" : "")" data-code="@($"{day.Year}-{day.Month}-{day.Day}-11")" data-toggle="modal" data-target="#reservations">11h00</div>
-                                <div class="rdv @(Model.DateCodeRendezVousTaken.Contains($"{day.Year}-{day.Month}-{day.Day}-13") ? "unavaible" : "")" data-code="@($"{day.Year}-{day.Month}-{day.Day}-13")" data-toggle="modal" data-target="#reservations">13h00</div>
-                                <div class="rdv @(Model.DateCodeRendezVousTaken.Contains($"{day.Year}-{day.Month}-{day.Day}-15") ? "unavaible" : "")" data-code="@($"{day.Year}-{day.Month}-{day.Day}-15")" data-toggle="modal" data-target="#reservations">15h00</div>
-                                <div class="rdv @(Model.DateCodeRendezVousTaken.Contains($"{day.Year}-{day.Month}-{day.Day}-17") ? "unavaible" : "")" data-code="@($"{day.Year}-{day.Month}-{day.Day}-17")" data-toggle="modal" data-target="#reservations">17h00</div>
-                            }
-                        </div>
+                            <div class="day @off" style="grid-row: @row; grid-column: @col" data-date="@day.Day-@day.Month">
+                                <p class="text-center">@day.ToString("dddd") @day.Day</p>
+                                @if (day.DayOfWeek != DayOfWeek.Sunday && new DateTime(Model.FirstDayOfMonth.Year, Model.FirstDayOfMonth.Month, i).CompareTo(DateTime.Now) > 0)
+                                {
+                                    <div class="rdv @(Model.DateCodeRendezVousTaken.Contains($"{day.Year}-{day.Month}-{day.Day}-9") ? "unavaible" : "")" data-code="@($"{day.Year}-{day.Month}-{day.Day}-9")" data-toggle="modal" data-target="#reservations">9h00</div>
+                                    <div class="rdv @(Model.DateCodeRendezVousTaken.Contains($"{day.Year}-{day.Month}-{day.Day}-11") ? "unavaible" : "")" data-code="@($"{day.Year}-{day.Month}-{day.Day}-11")" data-toggle="modal" data-target="#reservations">11h00</div>
+                                    <div class="rdv @(Model.DateCodeRendezVousTaken.Contains($"{day.Year}-{day.Month}-{day.Day}-13") ? "unavaible" : "")" data-code="@($"{day.Year}-{day.Month}-{day.Day}-13")" data-toggle="modal" data-target="#reservations">13h00</div>
+                                    <div class="rdv @(Model.DateCodeRendezVousTaken.Contains($"{day.Year}-{day.Month}-{day.Day}-15") ? "unavaible" : "")" data-code="@($"{day.Year}-{day.Month}-{day.Day}-15")" data-toggle="modal" data-target="#reservations">15h00</div>
+                                    <div class="rdv @(Model.DateCodeRendezVousTaken.Contains($"{day.Year}-{day.Month}-{day.Day}-17") ? "unavaible" : "")" data-code="@($"{day.Year}-{day.Month}-{day.Day}-17")" data-toggle="modal" data-target="#reservations">17h00</div>
+                                }
+                            </div>
 
-                        day = day.AddDays(1);
+                            day = day.AddDays(1);
+                        }
                     }
-                }
 
+                </div>
             </div>
         </div>
     </div>
@@ -129,46 +130,80 @@
 {
     <script>
 
-        let dateEnable = document.querySelectorAll(".rdv");
-        dateEnable.forEach(item => item.addEventListener("click", () => {
-            let dateCode = item.dataset.code;
-            let dateCodeInput = document.getElementById("dateCodeInput");
-            dateCodeInput.value = dateCode;
+        insertDateOnModalInput()
 
-            let dateInput = document.getElementById("date");
-            let splitDateCode = dateCode.split("-");
-            dateInput.value = `${splitDateCode[2]}/${splitDateCode[1]}/${splitDateCode[0]} à ${splitDateCode[3]}h`;
-        }));
+        function insertDateOnModalInput() {
+            let dateEnable = document.querySelectorAll(".rdv");
+            dateEnable.forEach(item => item.addEventListener("click", () => {
+                let dateCode = item.dataset.code;
+                let dateCodeInput = document.getElementById("dateCodeInput");
+                dateCodeInput.value = dateCode;
 
-        // ******  Chnagement de mois  ***** //
-        let monthdown = document.getElementById("monthDown");
-        let monthNumberUp = @((Model.FirstDayOfMonth.Month) == 1 ? 1 : Model.FirstDayOfMonth.Month-1) ;
-        let monthNumberDown = @((Model.FirstDayOfMonth.Month) == 12 ? 12 : Model.FirstDayOfMonth.Month+1) ;
+                let dateInput = document.getElementById("date");
+                let splitDateCode = dateCode.split("-");
+                dateInput.value = `${splitDateCode[2]}/${splitDateCode[1]}/${splitDateCode[0]} à ${splitDateCode[3]}h`;
+            }));
+        }
 
-        monthDown.addEventListener("click", async function (e) {
+        // ******  Changement de mois  ***** //
 
-            e.preventDefault();
-            let param = `month=${monthNumberDown}&year=@(Model.FirstDayOfMonth.Year)`;
-            console.log(param);
-            let response = await fetch('@Url.Action("ChangeMonth", "Ajax")' , {
-                method: 'POST',
-                headers: {
-                    "Content-Type": "application/x-www-form-urlencoded",
-                },
-                body: param,
-            });
-            // responseData recupere la réponse de 'response' quand elle est dispo (.text ou .json ou autre voir doc)
-            let responseData = await response.text();
-            if (response.ok === false){
-                //ERRORS
-                console.log('erreur');
-            }
-            else{
-                calendar.innerHTML = responseData;
-                monthNumberUp = monthNumberDown + 1 ;
-                monthNumberDown = monthNumberDown === 1 ? 1 : monthNumberDown - 1;
-            }
+        let year = @(Model.FirstDayOfMonth.Year);
+        let monthNumberDown = @((Model.FirstDayOfMonth.Month) == 1 ? 12 : Model.FirstDayOfMonth.Month-1) ;
+        let monthNumberUp = @((Model.FirstDayOfMonth.Month) == 12 ? 1 : Model.FirstDayOfMonth.Month+1) ;
+        if (monthNumberUp == 1) {
+            year++;
+        }
+        if (monthNumberDown == 12) {
+            year--;
+        }
 
-        })
+        changeMonth();
+
+        function changeMonth() {
+            console.log(monthNumberDown, monthNumberUp)
+            let changeMonthButtons = document.querySelectorAll(".changeMonth");
+            let calendar = document.getElementById("calendar");
+
+            changeMonthButtons.forEach((element) => element.addEventListener("click", async function () {
+                let param = "";
+                if (this.getAttribute("id") == "monthDown") {
+                    if (monthNumberDown == 12) {
+                        year--;
+                    }
+                    param = `month=${monthNumberDown}&year=${year}`;
+                }
+                else {
+                    console.log(monthNumberUp,year);
+                    if (monthNumberUp == 1) {
+                        year++;
+                    }
+                    param = `month=${monthNumberUp}&year=${year}`;
+                }
+                let response = await fetch('@Url.Action("ChangeMonth", "Ajax")', {
+                    method: 'POST',
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded",
+                    },
+                    body: param,
+                });
+                let responseData = await response.text();
+                if (response.ok) {
+                    calendar.innerHTML = responseData;
+                    if (this.getAttribute("id") == "monthDown") {
+                        monthNumberUp = monthNumberUp === 1 ? 12 : monthNumberUp - 1;
+                        monthNumberDown = monthNumberDown === 1 ? 12 : monthNumberDown - 1;
+                    }
+                    else {
+                        monthNumberDown = monthNumberDown === 12 ? 1 : monthNumberDown + 1;
+                        monthNumberUp = monthNumberUp === 12 ? 1 : monthNumberUp + 1;
+                    }
+                    insertDateOnModalInput()
+                    changeMonth();
+                }
+                else {
+                    console.log('erreur');
+                }
+            }));
+        }
     </script>
 }
