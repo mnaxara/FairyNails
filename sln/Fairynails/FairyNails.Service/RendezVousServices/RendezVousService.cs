@@ -36,6 +36,11 @@ namespace FairyNails.Service.RendezVousServices
 
         public bool AddRendezVous(String idUser, List<Int32> prestationsId, String dateCode)
         {
+            if(prestationsId.Count == 0)
+            {
+                return false;
+            }
+
             DateTime dateRdv = ConvertTimeCodeInDateTime(dateCode);
 
             TRendezVous rdv = CreateRendezVous(dateRdv, idUser);

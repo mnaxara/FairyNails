@@ -8,9 +8,11 @@ using Microsoft.AspNetCore.Mvc;
 using FairyNails.Service.PrestationServices;
 using FairyNailsApp.Models.RendezVous;
 using FairyNailsApp.Models.Prestation;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FairyNailsApp.Controllers
 {
+    [Authorize]
     public class RendezVousController : Controller
     {
         private readonly IRendezVousService _rendezVousService;
@@ -42,17 +44,33 @@ namespace FairyNailsApp.Controllers
 
         [HttpPost]
         public IActionResult SaveRendezVous(RendezVousViewModel rdvData)
-        {
-            List<Int32> prestationChosenId = new List<Int32>();
-            foreach (var prestation in rdvData.Prestations)
+        { 
+            if(ModelState.IsValid)
             {
-                if(prestation.IsChosen)
+                List<Int32> prestationChosenId = new List<Int32>();
+                foreach (var prestation in rdvData.Prestations)
                 {
-                    prestationChosenId.Add(prestation.IdPrestation);
+                    if(prestation.IsChosen)
+                    {
+                        prestationChosenId.Add(prestation.IdPrestation);
+                    }
+                }
+
+                bool addStatus = _rendezVousService.AddRendezVous(rdvData.IdClient, prestationChosenId, rdvData.DateCode);
+
+                if (addStatus == true)
+                {
+                    TempData["success"] = "Merci, je vous confirme notre rendez vous au plus vite !";
+                }
+                else
+                {
+                    TempData["alert"] = "Merci de choisir au moins une prestation";
                 }
             }
-
-            _rendezVousService.AddRendezVous(rdvData.IdClient, prestationChosenId, rdvData.DateCode);
+            else
+            {
+                TempData["alert"] = "Erreur lors de la prise du rendez vous, veuillez reessayer";
+            }
             return RedirectToAction("Calendar");
         }
     }

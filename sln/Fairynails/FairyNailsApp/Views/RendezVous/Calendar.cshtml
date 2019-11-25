@@ -21,6 +21,20 @@
 
 
 <div class="container">
+    <div class="row">
+        <div class="col-12">
+            @{
+                if (TempData["success"] != null)
+                {
+                    <p class="alert alert-success">@TempData["success"]</p>
+                }
+                if (TempData["alert"] != null)
+                {
+                    <p class="alert alert-danger">@TempData["alert"]</p>
+                }
+            }
+        </div>
+    </div>
     <div id="calendar">
         @{String monthName = Model.FirstDayOfMonth.ToString("MMMM").FirstLetterToUppercase(); }
         <div class="row mb-4">
