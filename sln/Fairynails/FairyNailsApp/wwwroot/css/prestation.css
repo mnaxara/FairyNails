@@ -1,0 +1,18 @@
+﻿th {
+    font-weight: bold;
+    font-family: 'Dancing Script', cursive;
+    font-size: 24px;
+}
+
+td, th {
+    text-align: center;
+}
+
+caption {
+    caption-side: top;
+}
+
+h2 {
+    font-family: 'Dancing Script', cursive;
+    text-align: center;
+}

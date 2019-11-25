@@ -1,4 +1,6 @@
-﻿using System;
+﻿using FairyNails.Service.PrestationServices;
+using FairyNailsApp.Models.Prestation;
+using System;
 using System.Collections.Generic;
 
 namespace FairyNailsApp.Models.RendezVous

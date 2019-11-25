@@ -13,5 +13,10 @@ namespace FairyNails.Service
         public string Adress { get; set; }
 
         public ICollection<TRendezVous> TRendezVous{ get; set; }
+
+        public String GetUserFirstName()
+        {
+            return this.FirstName;
+        }
     }
 }

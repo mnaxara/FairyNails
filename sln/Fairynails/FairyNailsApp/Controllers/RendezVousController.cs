@@ -7,6 +7,7 @@ using FairyNails.Service.RendezVousServices;
 using Microsoft.AspNetCore.Mvc;
 using FairyNails.Service.PrestationServices;
 using FairyNailsApp.Models.RendezVous;
+using FairyNailsApp.Models.Prestation;
 
 namespace FairyNailsApp.Controllers
 {

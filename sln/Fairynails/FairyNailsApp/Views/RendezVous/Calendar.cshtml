@@ -8,9 +8,10 @@
 }
 
 @{
-    var userName = _userManager.GetUserName(User);
-    var userFirstName = _userManager.GetUserName(User);
-    var userId = _userManager.GetUserId(User);
+    var user = await _userManager.FindByIdAsync(_userManager.GetUserId(User));
+    var userName = user.Name;
+    var userFirstName = user.FirstName;
+    var userId = user.Id;
 }
 
 @section Styles
