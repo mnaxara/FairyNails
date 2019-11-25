@@ -62,13 +62,13 @@ namespace FairyNails.Service.RendezVousServices
         public List<T> GetAllRendezVous<T>() where T : IRendezVous, new()
         {
             return _context.TRendezVous
-                .Select(item => new T()
+                .Select(item=> new T()
                 {
                     IdRdv = item.IdRdv,
                     DateRdv = item.DateRdv,
                     DureeTotal = item.DureeTotal,
                     PrixTotal = item.PrixTotal,
-                    TRendezVousHasPrestation = item.TRendezVousHasPrestation,
+                    Prestations = item.TRendezVousHasPrestation.Select(item => item.IdPrestationNavigation).Select(item => item.Nom).ToList(),
                     IdClientNavigation = item.IdClientNavigation
                 })
                 .ToList();

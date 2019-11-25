@@ -21,7 +21,7 @@ namespace FairyNailsApp.Controllers
         [HttpPost]
         public IActionResult ChangeMonth(Int32 month, Int32 year)
         {
-            RendezVousViewModel rendezVous = new RendezVousViewModel()
+            CalendarViewModel rendezVous = new CalendarViewModel()
             {
                 DateCodeRendezVousTaken = _rendezVousService.GetTakenRendezVousTimeCode(),
                 FirstDayOfMonth = new DateTime(year, month, 1)

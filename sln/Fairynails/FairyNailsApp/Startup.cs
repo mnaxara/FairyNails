@@ -30,6 +30,7 @@ namespace FairyNailsApp
                     Configuration.GetConnectionString("FairynailConnection"),
                     b => b.MigrationsAssembly("FairyNails.Service")));
             services.AddDefaultIdentity<ApplicationUser>()
+                .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<FairynailsContext>();
             services.AddControllersWithViews();
             services.AddRazorPages();

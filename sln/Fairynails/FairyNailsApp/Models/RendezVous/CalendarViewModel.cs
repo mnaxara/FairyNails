@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace FairyNailsApp.Models.RendezVous
 {
-    public class RendezVousViewModel
+    public class CalendarViewModel
     {
         [Required]
         public String DateCode { get; set; }

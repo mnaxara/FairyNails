@@ -24,7 +24,7 @@ namespace FairyNails.Service.RendezVousServices
         public TimeSpan DureeTotal { get; set; }
         public string IdClient { get; set; }
         public ApplicationUser IdClientNavigation { get; set; }
-        public ICollection<TRendezVousHasPrestation> TRendezVousHasPrestation { get; set; }
+        public List<String> Prestations { get; set; }
         #region methods
 
         #endregion

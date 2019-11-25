@@ -32,18 +32,18 @@ namespace FairyNailsApp.Controllers
         public IActionResult Calendar()
         {
 
-            RendezVousViewModel rendezVous = new RendezVousViewModel()
+            CalendarViewModel model = new CalendarViewModel()
             {
                 Prestations = _prestationService.GetAllPrestations<PrestationViewModel>(),
                 DateCodeRendezVousTaken = _rendezVousService.GetTakenRendezVousTimeCode(),
                 FirstDayOfMonth = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1)
             };
    
-            return View(rendezVous);
+            return View(model);
         }
 
         [HttpPost]
-        public IActionResult SaveRendezVous(RendezVousViewModel rdvData)
+        public IActionResult SaveRendezVous(CalendarViewModel rdvData)
         { 
             if(ModelState.IsValid)
             {
