@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using FairyNails.Service.PrestationServices;
 using FairyNails.Service.RendezVousServices;
+using FairyNailsApp.Models.Admin;
 using FairyNailsApp.Models.RendezVous;
 using Microsoft.AspNetCore.Mvc;
 
@@ -26,6 +27,14 @@ namespace FairyNailsApp.Controllers
                 DateCodeRendezVousTaken = _rendezVousService.GetTakenRendezVousTimeCode(),
                 FirstDayOfMonth = new DateTime(year, month, 1)
             };
+
+            return PartialView(rendezVous);
+        }
+
+        [HttpPost]
+        public IActionResult GetDayRendezVous(String date)
+        {
+            List<AdminRendezVousViewModel> rendezVous = _rendezVousService.GetDayRendezVousWithPrestationName<AdminRendezVousViewModel>(date);
 
             return PartialView(rendezVous);
         }

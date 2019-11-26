@@ -10,11 +10,12 @@ namespace FairyNailsApp.Models.Admin
 {
     public class AdminIndexViewModel
     {
-        public List<ListRendezVousViewModel> RendezVous { get; set; }
+        public List<AdminRendezVousViewModel> RendezVousOfDay { get; set; }
+        public List<AdminRendezVousViewModel> WaitingRendezVous { get; set; }
         public String TodayShortDate { get; set; }
     }
 
-    public class ListRendezVousViewModel : IRendezVous
+    public class AdminRendezVousViewModel : IRendezVous
     {
         public int IdRdv { get; set; }
         public DateTime DateRdv { get; set; }

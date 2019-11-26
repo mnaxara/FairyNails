@@ -1,0 +1,31 @@
+﻿@model List<AdminRendezVousViewModel>
+
+@{
+    foreach (var rdv in Model)
+    {
+        if (rdv.Validate)
+        {
+
+            <div class="card" style="width: 18rem;">
+                <div class="card-body">
+                    <h5 class="card-title">@rdv.IdClientNavigation.Name @rdv.IdClientNavigation.FirstName</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">@rdv.DateRdv.ToShortTimeString()</h6>
+                    <div class="card-text">
+                        <span>Prestations demandés :</span>
+                        <ul class="list-group">
+                            @{
+                                foreach (var name in rdv.Prestations)
+                                {
+                                    <li class="list-group-item">@name</li>
+                                }
+                            }
+                        </ul>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <p>Temps estimé : @rdv.DureeTotal</p>
+                </div>
+            </div>
+        }
+    }
+}

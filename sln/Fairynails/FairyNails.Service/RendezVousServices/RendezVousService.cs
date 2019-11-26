@@ -87,6 +87,23 @@ namespace FairyNails.Service.RendezVousServices
             return list;
         }
 
+        
+        public List<T> GetWaitingRendezVous<T>() where T : IRendezVous, new()
+        {
+            List<T> list = _context.TRendezVous
+                .Where(rdv => rdv.Validate == false)
+                .Select(rdv => new T()
+                {
+                    DateRdv = rdv.DateRdv,
+                    IdClientNavigation = rdv.IdClientNavigation,
+                    Prestations = rdv.TRendezVousHasPrestation.Select(rdvhp => rdvhp.IdPrestationNavigation.Nom).ToList(),
+                    IdRdv = rdv.IdRdv
+                })
+                .ToList();
+
+            return list;
+        }
+        
         public List<String> GetTakenRendezVousTimeCode()
         {
             return _context.TRendezVous
@@ -101,7 +118,7 @@ namespace FairyNails.Service.RendezVousServices
             {
                 DateRdv = dateRdv,
                 IdClientNavigation = _context.Users.Find(idUser),
-                Validate = true,
+                Validate = false,
             };
         }
 

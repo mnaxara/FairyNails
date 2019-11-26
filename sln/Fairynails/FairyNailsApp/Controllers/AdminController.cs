@@ -25,7 +25,9 @@ namespace FairyNailsApp.Controllers
             AdminIndexViewModel model = new AdminIndexViewModel()
             {
                 TodayShortDate = DateTime.Now.AddDays(1).ToShortDateString(),
-                RendezVous = _rendezVousService.GetDayRendezVousWithPrestationName<ListRendezVousViewModel>(DateTime.Now.AddDays(1).ToShortDateString())
+                RendezVousOfDay = _rendezVousService
+                    .GetDayRendezVousWithPrestationName<AdminRendezVousViewModel>(DateTime.Now.AddDays(1).ToShortDateString()),
+                WaitingRendezVous = _rendezVousService.GetWaitingRendezVous<AdminRendezVousViewModel>()
             };
             return View(model);
         }
