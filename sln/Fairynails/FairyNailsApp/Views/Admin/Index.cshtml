@@ -2,5 +2,82 @@
 @{
     ViewData["Title"] = "Administration";
 }
+@section Styles
+{
+    <link href="~/lib/bootstrap/dist/css/bootstrap-datepicker3.standalone.min.css" rel="stylesheet" />
+    <link href="~/css/admin.css" rel="stylesheet" />
+}
 
 <h1>Panel Administration</h1>
+
+<div class="row mb-4">
+    <div class="col-12 d-flex justify-content-center">
+        <h2>Consulter les rendez vous : </h2>
+        <input class="datepicker text-center ml-2" data-date-format="mm/dd/yyyy" value="@Model.TodayShortDate">
+    </div>
+</div>
+<div class="row">
+    <div id="rendezVous" class="col-12">
+        <div class="row grid rdv">
+            @{
+                foreach (var rdv in Model.RendezVous)
+                {
+                    if (rdv.Validate)
+                    {
+
+                        <div class="card" style="width: 18rem;">
+                            <div class="card-body">
+                                <h5 class="card-title">@rdv.IdClientNavigation.Name @rdv.IdClientNavigation.FirstName</h5>
+                                <h6 class="card-subtitle mb-2 text-muted">@rdv.DateRdv.ToShortTimeString()</h6>
+                                <div class="card-text">
+                                    <span>Prestations demandés :</span>
+                                    <ul class="list-group">
+                                        @{
+                                            foreach (var name in rdv.Prestations)
+                                            {
+                                                <li class="list-group-item">@name</li>
+                                            }
+                                        }
+                                    </ul>
+                                    <p>Temps estimé : @rdv.DureeTotal</p>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+            }
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@section Scripts
+{
+    <script src="~/lib/bootstrap/dist/js/bootstrap-datepicker.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap-datepicker.fr.min.js"></script>
+    <script>
+        $('.datepicker').datepicker({
+            language: "fr",
+            todayBtn: true,
+            todayHighlight: true,
+            format: "dd/mm/yyyy"
+        });
+    </script>
+}

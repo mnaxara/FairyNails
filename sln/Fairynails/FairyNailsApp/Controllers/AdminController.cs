@@ -22,12 +22,10 @@ namespace FairyNailsApp.Controllers
 
         public IActionResult Index()
         {
-            List<ListRendezVousViewModel> rendezVous = _rendezVousService.GetAllRendezVous<ListRendezVousViewModel>();
-            List<Int32> idsPrestation = new List<int>();
-
             AdminIndexViewModel model = new AdminIndexViewModel()
             {
-                FirstDayOfMonth = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1)
+                TodayShortDate = DateTime.Now.AddDays(1).ToShortDateString(),
+                RendezVous = _rendezVousService.GetDayRendezVousWithPrestationName<ListRendezVousViewModel>(DateTime.Now.AddDays(1).ToShortDateString())
             };
             return View(model);
         }

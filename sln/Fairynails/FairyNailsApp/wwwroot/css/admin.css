@@ -1,0 +1,10 @@
+﻿.grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-gap: 10px;
+    grid-auto-rows: minmax(100px, auto);
+}
+
+h5, h6{
+    font-size : 1.5em;
+}

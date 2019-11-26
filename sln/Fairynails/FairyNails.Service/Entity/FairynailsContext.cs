@@ -71,8 +71,6 @@ namespace FairyNails.Service.Entity
                     .HasColumnName("Id_client")
                     .HasMaxLength(450);
 
-                entity.Property(e => e.PrixTotal).HasColumnType("money");
-
                 entity.Property(e => e.Validate).HasColumnName("validate");
 
                 entity.HasOne(d => d.IdClientNavigation)

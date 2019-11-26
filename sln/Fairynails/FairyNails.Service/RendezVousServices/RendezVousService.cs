@@ -59,26 +59,39 @@ namespace FairyNails.Service.RendezVousServices
             return true;
         }
 
-        public List<T> GetAllRendezVous<T>() where T : IRendezVous, new()
+        public List<T> GetDayRendezVousWithPrestationName<T>(String shortDateFormat) where T : IRendezVous, new()
         {
-            return _context.TRendezVous
-                .Select(item=> new T()
+            String[] dateExplode = shortDateFormat.Split('/');
+            DateTime beginDay = new DateTime(Int32.Parse(dateExplode[2]), Int32.Parse(dateExplode[1]), Int32.Parse(dateExplode[0]),0,0,0);
+            DateTime endDay = new DateTime(Int32.Parse(dateExplode[2]), Int32.Parse(dateExplode[1]), Int32.Parse(dateExplode[0]),23,59,59);
+            List<T> list = _context.TRendezVous
+                .Include(rdv => rdv.IdClientNavigation)
+                .Include(rdv => rdv.TRendezVousHasPrestation)
+                    .ThenInclude(p => p.IdPrestationNavigation)
+                .ToList()
+                .Where(rdv => rdv.DateRdv < endDay)
+                .Where(rdv => rdv.DateRdv > beginDay)
+                .Select(rdv => new T()
                 {
-                    IdRdv = item.IdRdv,
-                    DateRdv = item.DateRdv,
-                    DureeTotal = item.DureeTotal,
-                    PrixTotal = item.PrixTotal,
-                    Prestations = item.TRendezVousHasPrestation.Select(item => item.IdPrestationNavigation).Select(item => item.Nom).ToList(),
-                    IdClientNavigation = item.IdClientNavigation
+                    IdRdv = rdv.IdRdv,
+                    DateRdv = rdv.DateRdv,
+                    DureeTotal = rdv.DureeTotal,
+                    PrixTotal = rdv.PrixTotal,
+                    Prestations = rdv.TRendezVousHasPrestation.Select(rdv => rdv.IdPrestationNavigation).Select(prest => prest.Nom).ToList(),
+                    IdClientNavigation = rdv.IdClientNavigation,
+                    Validate = rdv.Validate
                 })
+                .OrderBy(rdv => rdv.DateRdv)
                 .ToList();
+
+            return list;
         }
 
         public List<String> GetTakenRendezVousTimeCode()
         {
             return _context.TRendezVous
-                .Where(item => item.Validate == true)
-                .Select(item => $"{item.DateRdv.Year}-{item.DateRdv.Month}-{item.DateRdv.Day}-{item.DateRdv.Hour}")
+                .Where(rdv => rdv.Validate == true)
+                .Select(rdv => $"{rdv.DateRdv.Year}-{rdv.DateRdv.Month}-{rdv.DateRdv.Day}-{rdv.DateRdv.Hour}")
                 .ToList();
         }
 
@@ -88,7 +101,6 @@ namespace FairyNails.Service.RendezVousServices
             {
                 DateRdv = dateRdv,
                 IdClientNavigation = _context.Users.Find(idUser),
-                PrixTotal = 200,
                 Validate = true,
             };
         }

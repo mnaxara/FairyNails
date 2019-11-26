@@ -25,6 +25,7 @@ namespace FairyNails.Service.RendezVousServices
         public string IdClient { get; set; }
         public ApplicationUser IdClientNavigation { get; set; }
         public List<String> Prestations { get; set; }
+        public bool Validate { get; set; }
         #region methods
 
         #endregion

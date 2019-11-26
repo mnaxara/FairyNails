@@ -11,7 +11,7 @@ namespace FairyNailsApp.Models.Admin
     public class AdminIndexViewModel
     {
         public List<ListRendezVousViewModel> RendezVous { get; set; }
-        public DateTime FirstDayOfMonth { get; set; }
+        public String TodayShortDate { get; set; }
     }
 
     public class ListRendezVousViewModel : IRendezVous
@@ -23,5 +23,6 @@ namespace FairyNailsApp.Models.Admin
         public string IdClient { get; set; }
         public ApplicationUser IdClientNavigation { get; set; }
         public List<string> Prestations { get; set ; }
+        public bool Validate { get; set; }
     }
 }

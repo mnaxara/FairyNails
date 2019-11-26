@@ -4,14 +4,16 @@ using FairyNails.Service.Entity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace FairyNails.Service.Migrations
 {
     [DbContext(typeof(FairynailsContext))]
-    partial class FairynailsContextModelSnapshot : ModelSnapshot
+    [Migration("20191126085601_Delete_PrixTotal")]
+    partial class Delete_PrixTotal
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
