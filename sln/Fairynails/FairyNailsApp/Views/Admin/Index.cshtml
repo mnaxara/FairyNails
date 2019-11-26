@@ -57,7 +57,7 @@
     </div>
 </div>
 <div id="waitingRendezVous" class="col-12">
-    <div class="row grid rdv">
+    <div class="row grid rdv" id="waitingrdv">
         @{
             foreach (var rdv in Model.WaitingRendezVous)
             {
@@ -78,8 +78,8 @@
                         </div>
                     </div>
                     <div class="card-footer d-flex justify-content-around mt-2">
-                        <button id="accept" data-rdv="@rdv.IdRdv" class="btn btn-success">Accepter</button>
-                        <button id="reject" date-rdv="@rdv.IdRdv" class="btn btn-danger">Refuser</button>
+                        <button data-command="accept" data-rdv="@rdv.IdRdv" class="btn btn-success validationBtn">Accepter</button>
+                        <button data-command="reject" data-rdv="@rdv.IdRdv" class="btn btn-danger validationBtn">Refuser</button>
                     </div>
                 </div>
             }
@@ -92,6 +92,7 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap-datepicker.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap-datepicker.fr.min.js"></script>
     <script>
+        /** Datepicker JS **/
         $('.datepicker').datepicker({
             language: "fr",
             todayBtn: true,
@@ -99,7 +100,10 @@
             format: "dd/mm/yyyy",
             autoclose: true
         });
+        /** EventListner**/
+        AcceptRejectRendezVous()
 
+        /** GetRendezVous for day pick ajax request **/
         let datechosen = document.getElementById("datechosen");
         let rendezvous = document.getElementById("rendezvous");
         async function getRendezVous (e) {
@@ -121,6 +125,35 @@
                 console.log('erreur');
             }
         }
+
+        /** Accept / Reject rendez vous ajax request **/
+        function AcceptRejectRendezVous() {
+            let validationBtn = document.querySelectorAll(".validationBtn");
+            validationBtn.forEach(element => element.addEventListener("click", async function (e) {
+                let command = this.dataset.command;
+                let rdv = this.dataset.rdv;
+                let waitingrdv = document.getElementById("waitingrdv");
+                let param = `idRdv=${rdv}&command=${command}`;
+                console.log(this,command, rdv, param);
+
+                let response = await fetch('@Url.Action("AcceptRejectRendezVous", "Ajax")', {
+                    method: 'POST',
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded",
+                    },
+                    body: param,
+                });
+                let responseData = await response.text();
+                if (response.ok) {
+                    waitingrdv.innerHTML = responseData;
+                    AcceptRejectRendezVous()
+                }
+                else {
+                    console.log('erreur');
+                }
+            }))
+        };
+
 
     </script>
 }

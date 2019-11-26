@@ -36,7 +36,7 @@ namespace FairyNails.Service.RendezVousServices
 
         public bool AddRendezVous(String idUser, List<Int32> prestationsId, String dateCode)
         {
-            if(prestationsId.Count == 0)
+            if (prestationsId.Count == 0)
             {
                 return false;
             }
@@ -52,18 +52,35 @@ namespace FairyNails.Service.RendezVousServices
             return true;
         }
 
-        public bool DeleteRendezVous(int idRdv)
+        public bool RendezVousValidReject(Int32 idRdv, String command)
         {
-            TRendezVous toDelete = _context.TRendezVous.Find(idRdv);
-            _context.Remove(toDelete);
+            TRendezVous rdv = _context.TRendezVous.Find(idRdv);
+
+            if (command.Equals("accept"))
+            {
+                rdv.Validate = true;
+            }
+            else if (command.Equals("reject"))
+            {
+                DeleteRendezVous(rdv);
+            }
+
+            _context.SaveChanges();
+
+            return true;
+        }
+
+        public bool DeleteRendezVous(TRendezVous rdv)
+        {
+            _context.Remove(rdv);
             return true;
         }
 
         public List<T> GetDayRendezVousWithPrestationName<T>(String shortDateFormat) where T : IRendezVous, new()
         {
             String[] dateExplode = shortDateFormat.Split('/');
-            DateTime beginDay = new DateTime(Int32.Parse(dateExplode[2]), Int32.Parse(dateExplode[1]), Int32.Parse(dateExplode[0]),0,0,0);
-            DateTime endDay = new DateTime(Int32.Parse(dateExplode[2]), Int32.Parse(dateExplode[1]), Int32.Parse(dateExplode[0]),23,59,59);
+            DateTime beginDay = new DateTime(Int32.Parse(dateExplode[2]), Int32.Parse(dateExplode[1]), Int32.Parse(dateExplode[0]), 0, 0, 0);
+            DateTime endDay = new DateTime(Int32.Parse(dateExplode[2]), Int32.Parse(dateExplode[1]), Int32.Parse(dateExplode[0]), 23, 59, 59);
             List<T> list = _context.TRendezVous
                 .Include(rdv => rdv.IdClientNavigation)
                 .Include(rdv => rdv.TRendezVousHasPrestation)
@@ -87,7 +104,6 @@ namespace FairyNails.Service.RendezVousServices
             return list;
         }
 
-        
         public List<T> GetWaitingRendezVous<T>() where T : IRendezVous, new()
         {
             List<T> list = _context.TRendezVous
@@ -103,7 +119,7 @@ namespace FairyNails.Service.RendezVousServices
 
             return list;
         }
-        
+
         public List<String> GetTakenRendezVousTimeCode()
         {
             return _context.TRendezVous
@@ -112,7 +128,7 @@ namespace FairyNails.Service.RendezVousServices
                 .ToList();
         }
 
-        private TRendezVous CreateRendezVous (DateTime dateRdv, String idUser)
+        private TRendezVous CreateRendezVous(DateTime dateRdv, String idUser)
         {
             return new TRendezVous()
             {
@@ -122,7 +138,7 @@ namespace FairyNails.Service.RendezVousServices
             };
         }
 
-        private List<TRendezVousHasPrestation> CreateRendezVousPrestationsLink (List<Int32> prestationsId, TRendezVous rdv)
+        private List<TRendezVousHasPrestation> CreateRendezVousPrestationsLink(List<Int32> prestationsId, TRendezVous rdv)
         {
             List<TRendezVousHasPrestation> link = new List<TRendezVousHasPrestation>();
             foreach (var prestationId in prestationsId)
@@ -134,7 +150,7 @@ namespace FairyNails.Service.RendezVousServices
             return link;
         }
 
-        private DateTime ConvertTimeCodeInDateTime (String dateCode)
+        private DateTime ConvertTimeCodeInDateTime(String dateCode)
         {
             String[] dateCodeSplit = dateCode.Split('-');
             return new DateTime(

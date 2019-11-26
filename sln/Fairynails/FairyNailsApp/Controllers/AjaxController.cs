@@ -38,5 +38,15 @@ namespace FairyNailsApp.Controllers
 
             return PartialView(rendezVous);
         }
+
+        [HttpPost]
+        public IActionResult AcceptRejectRendezVous(Int32 idRdv, String command)
+        {
+            bool status = _rendezVousService.RendezVousValidReject(idRdv, command);
+
+            List<AdminRendezVousViewModel> waitingRendezVous = _rendezVousService.GetWaitingRendezVous<AdminRendezVousViewModel>();
+
+            return PartialView("WaitingRendezVous", waitingRendezVous);
+        }
     }
 }
