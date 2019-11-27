@@ -1,0 +1,78 @@
+﻿@model AdminRendezVousManagementViewModel
+
+<div class="row my-5">
+    <div class="col-12 d-flex justify-content-center">
+        <h2>Consulter les rendez vous : </h2>
+        <input id="datechosen" onchange="getRendezVous()" class="datepicker text-center ml-2" data-date-format="mm/dd/yyyy" value="@Model.TodayShortDate">
+    </div>
+</div>
+<div class="row">
+    <div class="col-12">
+        <div id="rendezvous" class="row grid rdv">
+            @{
+                foreach (var rdv in Model.RendezVousOfDay)
+                {
+                    if (rdv.Validate)
+                    {
+
+                        <div class="card" style="width: 18rem;">
+                            <div class="card-body">
+                                <h5 class="card-title">@rdv.IdClientNavigation.Name @rdv.IdClientNavigation.FirstName</h5>
+                                <h6 class="card-subtitle mb-2 text-muted">@rdv.DateRdv.ToShortTimeString()</h6>
+                                <div class="card-text">
+                                    <span>Prestations demandés :</span>
+                                    <ul class="list-group">
+                                        @{
+                                            foreach (var name in rdv.Prestations)
+                                            {
+                                                <li class="list-group-item">@name</li>
+                                            }
+                                        }
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <p>Temps estimé : @rdv.DureeTotal</p>
+                            </div>
+                        </div>
+                    }
+                }
+            }
+        </div>
+    </div>
+</div>
+<div class="row my-5">
+    <div class="col-12 d-flex justify-content-center">
+        <h2>Valider des rendez vous : </h2>
+    </div>
+</div>
+<div id="waitingRendezVous" class="col-12">
+    <div class="row grid rdv" id="waitingrdv">
+        @{
+            foreach (var rdv in Model.WaitingRendezVous)
+            {
+                <div class="card" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">@rdv.IdClientNavigation.Name @rdv.IdClientNavigation.FirstName</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">@rdv.DateRdv</h6>
+                        <div class="card-text">
+                            <span>Prestations demandés :</span>
+                            <ul class="list-group">
+                                @{
+                                    foreach (var name in rdv.Prestations)
+                                    {
+                                        <li class="list-group-item">@name</li>
+                                    }
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="card-footer d-flex justify-content-around mt-2">
+                        <button data-command="accept" data-rdv="@rdv.IdRdv" class="btn btn-success validationBtn">Accepter</button>
+                        <button data-command="reject" data-rdv="@rdv.IdRdv" class="btn btn-danger validationBtn">Refuser</button>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+</div>

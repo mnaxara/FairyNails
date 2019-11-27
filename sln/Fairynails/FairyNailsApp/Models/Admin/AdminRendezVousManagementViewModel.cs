@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace FairyNailsApp.Models.Admin
 {
-    public class AdminIndexViewModel
+    public class AdminRendezVousManagementViewModel
     {
         public List<AdminRendezVousViewModel> RendezVousOfDay { get; set; }
         public List<AdminRendezVousViewModel> WaitingRendezVous { get; set; }

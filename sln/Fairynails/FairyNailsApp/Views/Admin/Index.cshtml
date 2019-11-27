@@ -1,4 +1,4 @@
-﻿@model AdminIndexViewModel
+﻿@model AdminRendezVousManagementViewModel
 @{
     ViewData["Title"] = "Administration";
 }
@@ -10,104 +10,74 @@
 
 <h1>Panel Administration</h1>
 
-<div class="row my-5">
-    <div class="col-12 d-flex justify-content-center">
-        <h2>Consulter les rendez vous : </h2>
-        <input id="datechosen" onchange="getRendezVous()" class="datepicker text-center ml-2" data-date-format="mm/dd/yyyy" value="@Model.TodayShortDate">
-    </div>
-</div>
-<div class="row">
-    <div class="col-12">
-        <div id="rendezvous" class="row grid rdv">
-            @{
-                foreach (var rdv in Model.RendezVousOfDay)
-                {
-                    if (rdv.Validate)
-                    {
+<nav class="d-flex justify-content-center mt-5">
+    <ul class="panel d-flex justify-content-around">
+        <li id="agenda" onclick="getContent(this)" class="py-3">Gérer les Rendez vous</li>
+        <li id="prestations" onclick="getContent(this)" class="py-3">Gerer les Prestations</li>
+        <li id="gallery" onclick="getContent(this)" class="py-3">Modifier la galerie</li>
+        <li id="general" onclick="getContent(this)" class="py-3">Admin. générale</li>
+    </ul>
+</nav>
 
-                        <div class="card" style="width: 18rem;">
-                            <div class="card-body">
-                                <h5 class="card-title">@rdv.IdClientNavigation.Name @rdv.IdClientNavigation.FirstName</h5>
-                                <h6 class="card-subtitle mb-2 text-muted">@rdv.DateRdv.ToShortTimeString()</h6>
-                                <div class="card-text">
-                                    <span>Prestations demandés :</span>
-                                    <ul class="list-group">
-                                        @{
-                                            foreach (var name in rdv.Prestations)
-                                            {
-                                                <li class="list-group-item">@name</li>
-                                            }
-                                        }
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="card-footer">
-                                <p>Temps estimé : @rdv.DureeTotal</p>
-                            </div>
-                        </div>
-                    }
-                }
-            }
-        </div>
-    </div>
+<div id="content">
+
 </div>
-<div class="row my-5">
-    <div class="col-12 d-flex justify-content-center">
-        <h2>Valider des rendez vous : </h2>
-    </div>
-</div>
-<div id="waitingRendezVous" class="col-12">
-    <div class="row grid rdv" id="waitingrdv">
-        @{
-            foreach (var rdv in Model.WaitingRendezVous)
-            {
-                <div class="card" style="width: 18rem;">
-                    <div class="card-body">
-                        <h5 class="card-title">@rdv.IdClientNavigation.Name @rdv.IdClientNavigation.FirstName</h5>
-                        <h6 class="card-subtitle mb-2 text-muted">@rdv.DateRdv</h6>
-                        <div class="card-text">
-                            <span>Prestations demandés :</span>
-                            <ul class="list-group">
-                                @{
-                                    foreach (var name in rdv.Prestations)
-                                    {
-                                        <li class="list-group-item">@name</li>
-                                    }
-                                }
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="card-footer d-flex justify-content-around mt-2">
-                        <button data-command="accept" data-rdv="@rdv.IdRdv" class="btn btn-success validationBtn">Accepter</button>
-                        <button data-command="reject" data-rdv="@rdv.IdRdv" class="btn btn-danger validationBtn">Refuser</button>
-                    </div>
-                </div>
-            }
-        }
-    </div>
-</div>
+
 
 @section Scripts
 {
     <script src="~/lib/bootstrap/dist/js/bootstrap-datepicker.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap-datepicker.fr.min.js"></script>
     <script>
+
+        let content = document.getElementById("content");
+
+        /** content call**/
+        async function getContent(sender) {
+            let actions = {
+                agenda: '@Url.Action("GetRendezVousManagement", "Ajax")',
+                prestations: '@Url.Action("GetPrestationsManagement", "Ajax")'
+            }
+
+            let actionId = sender.getAttribute("id")
+            let action = actions[`${actionId}`]
+
+            let response = await fetch(action, {
+                method: 'POST'
+            });
+            let responseData = await response.text();
+            if (response.ok) {
+                content.innerHTML = responseData;
+                datePickerSetup()
+                AcceptRejectRendezVousListner()
+            }
+            else {
+                console.log('erreur');
+            }
+        }
+        
         /** Datepicker JS **/
-        $('.datepicker').datepicker({
-            language: "fr",
-            todayBtn: true,
-            todayHighlight: true,
-            format: "dd/mm/yyyy",
-            autoclose: true
-        });
-        /** EventListner**/
-        AcceptRejectRendezVous()
+        function datePickerSetup() {
+            $('.datepicker').datepicker({
+                language: "fr",
+                todayBtn: true,
+                todayHighlight: true,
+                format: "dd/mm/yyyy",
+                autoclose: true
+            });
+        }
+
+        /** Accept / Reject listner **/
+        function AcceptRejectRendezVousListner() {
+            let validationBtn = document.querySelectorAll(".validationBtn");
+            validationBtn.forEach(element => element.addEventListener("click", validRejectRdv))
+        };
 
         /** GetRendezVous for day pick ajax request **/
-        let datechosen = document.getElementById("datechosen");
-        let rendezvous = document.getElementById("rendezvous");
         async function getRendezVous (e) {
 
+            let datechosen = document.getElementById("datechosen");
+            let rendezvous = document.getElementById("rendezvous");
             let param = `date=${datechosen.value}`;
 
             let response = await fetch('@Url.Action("GetDayRendezVous", "Ajax")', {
@@ -126,10 +96,8 @@
             }
         }
 
-        /** Accept / Reject rendez vous ajax request **/
-        function AcceptRejectRendezVous() {
-            let validationBtn = document.querySelectorAll(".validationBtn");
-            validationBtn.forEach(element => element.addEventListener("click", async function (e) {
+        //** Accept/reject rdv ajax request **/
+        async function validRejectRdv (e) {
                 let command = this.dataset.command;
                 let rdv = this.dataset.rdv;
                 let waitingrdv = document.getElementById("waitingrdv");
@@ -151,9 +119,30 @@
                 else {
                     console.log('erreur');
                 }
-            }))
-        };
+            }
 
+        /** Edit Prestation function **/
 
+        async function editPrestation(sender) {
+            let idPrestation = sender.dataset.prestation;
+            let param = `idPrestation=${idPrestation}`
+
+            let response = await fetch('@Url.Action("GetEditPrestationForm", "Ajax")', {
+                method: 'POST',
+                headers: {
+                        "Content-Type": "application/x-www-form-urlencoded",
+                    },
+                body: param,
+            });
+            let responseData = await response.text();
+            if (response.ok) {
+                content.innerHTML = responseData;
+                datePickerSetup()
+                AcceptRejectRendezVousListner()
+            }
+            else {
+                console.log('erreur');
+            }
+        }
     </script>
 }

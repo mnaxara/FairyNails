@@ -44,6 +44,21 @@ namespace FairyNails.Service.PrestationServices
                 })
                 .ToList();
         }
+
+        public T GetPrestationById<T>(Int32 idPrestation) where T : IPrestation, new()
+        {
+            return _context.TPrestation
+                .Where(prest => prest.IdPrestation == idPrestation)
+                .Select(prest => new T()
+                {
+                    IdPrestation = prest.IdPrestation,
+                    Description = prest.Description,
+                    Duree = prest.Duree,
+                    Nom = prest.Nom,
+                    Prix = prest.Prix
+                })
+                .FirstOrDefault();
+        }
         #endregion
     }
 }

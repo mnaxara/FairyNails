@@ -1,0 +1,44 @@
+﻿@model List<AdminPrestationViewModel>
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Nom</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">Durée (Approximative)</th>
+                        <th scope="col">Prix</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <td colspan="5">
+                            <button class="button-pink">Ajouter</button>
+                        </td>
+                    </tr>
+                </tfoot>
+                <tbody>
+                    @{
+                        foreach (var prestation in Model)
+                        {
+                            <tr id="@prestation.IdPrestation">
+                                <td scope="row">@prestation.Nom</td>
+                                <td>@prestation.Description</td>
+                                <td>@prestation.Duree</td>
+                                <td>@Math.Round(prestation.Prix, 2) €</td>
+                                <td>
+                                    <button data-prestation="@prestation.IdPrestation" onclick="editPrestation(this)" class="btn btn-secondary">Editer</button>
+                                    <button data-prestation="@prestation.IdPrestation" class="btn btn-danger">Supprimer</button>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+

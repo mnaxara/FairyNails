@@ -5,8 +5,8 @@
     grid-auto-rows: minmax(100px, auto);
 }
 
-h5, h6{
-    font-size : 1.5em;
+h5, h6 {
+    font-size: 1.5em;
 }
 
 .list-group-item {
@@ -17,6 +17,28 @@ h5, h6{
     background-color: #fff;
     border: 1px solid rgba(0,0,0,.125);
 }
+
 .card {
     height: 400px;
+}
+
+.panel {
+    width: 90%;
+    border: 2px solid #bb4c7b;
+    border-radius: 10px;
+}
+
+.panel li {
+    font-family: 'Dancing Script', cursive;
+    font-size : 1.5em;
+    cursor: pointer;
+    font-weight: bolder;
+    padding: 0 25px;
+    list-style: none;
+    border-radius: 10px;
+}
+
+.panel li:hover {
+    color: #bb4c7b;
+    text-shadow: 5px 5px 1px #bf578259
 }

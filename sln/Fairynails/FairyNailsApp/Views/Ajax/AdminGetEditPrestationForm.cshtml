@@ -1,0 +1,27 @@
+﻿@model AdminPrestationViewModel
+
+<form asp-controller="Ajax" asp-action="EditPrestation" method="post">
+    <div class="form-group">
+        <label asp-for="Nom"></label>
+        <input class="form-control" asp-for="Nom" />
+        <span asp-validation-for="Nom"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Description"></label>
+        <textarea class="form-control" asp-for="Description"></textarea>
+        <span asp-validation-for="Description"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Duree"></label>
+        <input class="form-control" asp-for="Duree" />
+        <span asp-validation-for="Duree"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Prix"></label>
+        <input class="form-control" asp-for="Prix" />
+        <span asp-validation-for="Prix"></span>
+    </div>
+
+    <button type="submit" class="btn btn-success">Enregistrer</button>
+
+</form>
