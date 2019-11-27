@@ -11,7 +11,8 @@ using System.Threading.Tasks;
 namespace FairyNails.Service.PrestationServices
 {
     /// <summary>
-    /// A CSClass definition.
+    /// All the services which aimed the "prestation"
+    /// In order not to expose entity, generic methode are used.
     /// </summary>
     public sealed class PrestationService : IPrestationService
     {
@@ -58,6 +59,30 @@ namespace FairyNails.Service.PrestationServices
                     Prix = prest.Prix
                 })
                 .FirstOrDefault();
+        }
+
+        public Boolean UpdatePrestation<T>(T prestation) where T : IPrestation, new()
+        {
+            TPrestation prestationToUpdate = new TPrestation()
+            {
+                IdPrestation = prestation.IdPrestation,
+                Description = prestation.Description,
+                Duree = prestation.Duree,
+                Nom = prestation.Nom,
+                Prix = prestation.Prix,
+            };
+            _context.TPrestation.Update(prestationToUpdate);
+            _context.SaveChanges();
+
+            return true;
+            
+        }
+        public Boolean DeletePrestation(Int32 idPrestation)
+        {
+            TPrestation toDelete = _context.TPrestation.Find(idPrestation);
+            _context.TPrestation.Remove(toDelete);
+            _context.SaveChanges();
+            return true;
         }
         #endregion
     }

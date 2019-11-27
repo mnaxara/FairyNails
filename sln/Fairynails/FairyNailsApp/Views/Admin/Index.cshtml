@@ -121,9 +121,9 @@
                 }
             }
 
-        /** Edit Prestation function **/
+        /** EditPrestation form function **/
 
-        async function editPrestation(sender) {
+        async function editPrestationForm(sender) {
             let idPrestation = sender.dataset.prestation;
             let param = `idPrestation=${idPrestation}`
 
@@ -137,8 +137,6 @@
             let responseData = await response.text();
             if (response.ok) {
                 content.innerHTML = responseData;
-                datePickerSetup()
-                AcceptRejectRendezVousListner()
             }
             else {
                 console.log('erreur');

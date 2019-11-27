@@ -12,7 +12,8 @@ using Microsoft.EntityFrameworkCore;
 namespace FairyNails.Service.RendezVousServices
 {
     /// <summary>
-    /// 
+    /// All the services which aimed the "rendez vous"
+    /// In order not to expose entity, generic methode are used.
     /// </summary>
     public sealed class RendezVousService : IRendezVousService
     {

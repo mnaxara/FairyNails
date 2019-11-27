@@ -30,8 +30,10 @@
                                 <td>@prestation.Duree</td>
                                 <td>@Math.Round(prestation.Prix, 2) €</td>
                                 <td>
-                                    <button data-prestation="@prestation.IdPrestation" onclick="editPrestation(this)" class="btn btn-secondary">Editer</button>
-                                    <button data-prestation="@prestation.IdPrestation" class="btn btn-danger">Supprimer</button>
+                                    <button data-prestation="@prestation.IdPrestation" onclick="editPrestationForm(this)" class="btn btn-secondary">Editer</button>
+                                    <form style="display: inline" asp-action="DeletePrestation" asp-controller="Admin" asp-route-idPrestation ="@prestation.IdPrestation" method="post">
+                                        <button type="submit" class="btn btn-danger">Supprimer</button>
+                                    </form>
                                 </td>
                             </tr>
                         }

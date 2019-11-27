@@ -71,6 +71,7 @@ namespace FairyNailsApp.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult AcceptRejectRendezVous(Int32 idRdv, String command)
         {
             bool status = _rendezVousService.RendezVousValidReject(idRdv, command);
