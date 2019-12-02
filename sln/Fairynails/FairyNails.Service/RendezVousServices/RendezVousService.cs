@@ -71,11 +71,6 @@ namespace FairyNails.Service.RendezVousServices
             return true;
         }
 
-        public bool DeleteRendezVous(TRendezVous rdv)
-        {
-            _context.Remove(rdv);
-            return true;
-        }
 
         public List<T> GetDayRendezVousWithPrestationName<T>(String shortDateFormat) where T : IRendezVous, new()
         {
@@ -127,6 +122,12 @@ namespace FairyNails.Service.RendezVousServices
                 .Where(rdv => rdv.Validate == true)
                 .Select(rdv => $"{rdv.DateRdv.Year}-{rdv.DateRdv.Month}-{rdv.DateRdv.Day}-{rdv.DateRdv.Hour}")
                 .ToList();
+        }
+
+        private bool DeleteRendezVous(TRendezVous rdv)
+        {
+            _context.Remove(rdv);
+            return true;
         }
 
         private TRendezVous CreateRendezVous(DateTime dateRdv, String idUser)

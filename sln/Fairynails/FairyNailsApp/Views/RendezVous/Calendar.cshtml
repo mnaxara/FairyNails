@@ -165,17 +165,11 @@
         let year = @(Model.FirstDayOfMonth.Year);
         let monthNumberDown = @((Model.FirstDayOfMonth.Month) == 1 ? 12 : Model.FirstDayOfMonth.Month-1) ;
         let monthNumberUp = @((Model.FirstDayOfMonth.Month) == 12 ? 1 : Model.FirstDayOfMonth.Month+1) ;
-        if (monthNumberUp == 1) {
-            year++;
-        }
-        if (monthNumberDown == 12) {
-            year--;
-        }
 
         changeMonth();
 
         function changeMonth() {
-            console.log(monthNumberDown, monthNumberUp)
+            console.log(monthNumberDown, monthNumberUp,year)
             let changeMonthButtons = document.querySelectorAll(".changeMonth");
             let calendar = document.getElementById("calendar");
 
