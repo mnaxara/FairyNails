@@ -79,5 +79,11 @@ namespace FairyNailsApp.Controllers
 
             return PartialView("WaitingRendezVous", waitingRendezVous);
         }
+
+        [HttpPost]
+        public IActionResult GetAddPrestationForm()
+        {
+            return PartialView("AdminAddPrestationForm");
+        }
     }
 }

@@ -142,5 +142,22 @@
                 console.log('erreur');
             }
         }
+
+        /** AddPrestation form function **/
+
+        async function addPrestationForm() {
+
+            let response = await fetch('@Url.Action("GetAddPrestationForm", "Ajax")', {
+                method: 'POST'
+            });
+            let responseData = await response.text();
+            if (response.ok) {
+                content.innerHTML = responseData;
+            }
+            else {
+                console.log('erreur');
+            }
+        }
+
     </script>
 }

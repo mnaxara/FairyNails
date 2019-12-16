@@ -43,5 +43,13 @@ namespace FairyNailsApp.Controllers
 
             return RedirectToAction("Index");
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult AddPrestation(AdminPrestationViewModel prestation)
+        {
+            _prestationService.AddPrestation(prestation);
+            return RedirectToAction("Index");
+        }
     }
 }

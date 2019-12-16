@@ -77,10 +77,26 @@ namespace FairyNails.Service.PrestationServices
             return true;
             
         }
+
         public Boolean DeletePrestation(Int32 idPrestation)
         {
             TPrestation toDelete = _context.TPrestation.Find(idPrestation);
             _context.TPrestation.Remove(toDelete);
+            _context.SaveChanges();
+            return true;
+        }
+
+        public Boolean AddPrestation(IPrestation prestation)
+        {
+            TPrestation prestationToAdd = new TPrestation()
+            {
+                Nom = prestation.Nom,
+                Description = prestation.Description,
+                Duree = prestation.Duree,
+                Prix = prestation.Prix
+            };
+
+            _context.Add(prestationToAdd);
             _context.SaveChanges();
             return true;
         }
