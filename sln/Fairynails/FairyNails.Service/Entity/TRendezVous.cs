@@ -14,24 +14,8 @@ namespace FairyNails.Service.Entity
 
         public int IdRdv { get; set; }
         public DateTime DateRdv { get; set; }
-        [NotMapped]
-        public decimal PrixTotal
-        {
-            get
-            {
-                return this.TRendezVousHasPrestation.Sum(item =>item.IdPrestationNavigation.Prix);
-            }
-            private set { }
-        }
-        [NotMapped]
-        public TimeSpan DureeTotal
-        {
-            get
-            {
-                return this.TRendezVousHasPrestation.Aggregate(new TimeSpan(0, 0, 0), (total, item) => total.Add(item.IdPrestationNavigation.Duree));
-            }
-            private set { }
-        }
+        public decimal PrixTotal { get; set; }
+        public TimeSpan DureeTotal { get; set; }
         public string IdClient { get; set; }
         public bool Validate { get; set; }
 

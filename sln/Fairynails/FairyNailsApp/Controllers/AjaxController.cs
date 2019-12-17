@@ -26,7 +26,7 @@ namespace FairyNailsApp.Controllers
         {
             CalendarViewModel rendezVous = new CalendarViewModel()
             {
-                DateCodeRendezVousTaken = _rendezVousService.GetTakenRendezVousTimeCode(),
+                UnavaibleTimeCode = _rendezVousService.GetUnavailableDateCode(month),
                 FirstDayOfMonth = new DateTime(year, month, 1)
             };
 

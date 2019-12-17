@@ -44,7 +44,7 @@ namespace FairyNails.Service.RendezVousServices
 
             DateTime dateRdv = ConvertTimeCodeInDateTime(dateCode);
 
-            TRendezVous rdv = CreateRendezVous(dateRdv, idUser);
+            TRendezVous rdv = CreateRendezVous(dateRdv, idUser, prestationsId);
 
             List<TRendezVousHasPrestation> link = CreateRendezVousPrestationsLink(prestationsId, rdv);
             _context.AddRange(link);
@@ -109,19 +109,42 @@ namespace FairyNails.Service.RendezVousServices
                     DateRdv = rdv.DateRdv,
                     IdClientNavigation = rdv.IdClientNavigation,
                     Prestations = rdv.TRendezVousHasPrestation.Select(rdvhp => rdvhp.IdPrestationNavigation.Nom).ToList(),
-                    IdRdv = rdv.IdRdv
+                    IdRdv = rdv.IdRdv,
+                    DureeTotal = rdv.DureeTotal,
                 })
                 .ToList();
 
             return list;
         }
 
-        public List<String> GetTakenRendezVousTimeCode()
+        public List<String> GetUnavailableDateCode(Int32 month)
         {
-            return _context.TRendezVous
+            // TODO: Renvoyer les dateCode disponible par mois
+
+            List<String> UnavaibleDateCode = new List<String>();
+
+            List<UnavailableTime> rdvTime = _context.TRendezVous
                 .Where(rdv => rdv.Validate == true)
-                .Select(rdv => $"{rdv.DateRdv.Year}-{rdv.DateRdv.Month}-{rdv.DateRdv.Day}-{rdv.DateRdv.Hour}")
+                .Where(rdv => rdv.DateRdv.Month == month)
+                .Select(rdv => new UnavailableTime()
+                {
+                    DateRdv = rdv.DateRdv,
+                    Duration = rdv.DureeTotal
+                })
                 .ToList();
+
+            foreach (var time in rdvTime)
+            {               
+                TimeSpan ModifiedDuration = time.Duration.Add(new TimeSpan(0, 30, 0));
+                Double DurationHour = Math.Ceiling(ModifiedDuration.TotalHours);
+                for (int i = time.DateRdv.Hour; i < time.DateRdv.Hour+DurationHour; i++)
+                {
+                    String DateCode = $"{time.DateRdv.Year}-{ time.DateRdv.Month}-{ time.DateRdv.Day}-{i}";
+                    UnavaibleDateCode.Add(DateCode);
+                }
+            }
+
+            return UnavaibleDateCode;
         }
 
         private bool DeleteRendezVous(TRendezVous rdv)
@@ -130,14 +153,23 @@ namespace FairyNails.Service.RendezVousServices
             return true;
         }
 
-        private TRendezVous CreateRendezVous(DateTime dateRdv, String idUser)
+        private TRendezVous CreateRendezVous(DateTime dateRdv, String idUser, List<Int32> prestationsId)
         {
-            return new TRendezVous()
+            TRendezVous created = new TRendezVous()
             {
                 DateRdv = dateRdv,
                 IdClientNavigation = _context.Users.Find(idUser),
                 Validate = false,
             };
+
+            foreach (var prestationId in prestationsId)
+            {
+                TPrestation prestation = _context.TPrestation.Find(prestationId);
+                created.DureeTotal = created.DureeTotal.Add(prestation.Duree);
+                created.PrixTotal += prestation.Prix;
+            }
+
+            return created;
         }
 
         private List<TRendezVousHasPrestation> CreateRendezVousPrestationsLink(List<Int32> prestationsId, TRendezVous rdv)
@@ -163,6 +195,14 @@ namespace FairyNails.Service.RendezVousServices
                 0, 0);
         }
 
+        #endregion
+
+        #region projection class
+        public class UnavailableTime
+        {
+            public DateTime DateRdv { get; set; }
+            public TimeSpan Duration { get; set;}
+        }
         #endregion
     }
 }

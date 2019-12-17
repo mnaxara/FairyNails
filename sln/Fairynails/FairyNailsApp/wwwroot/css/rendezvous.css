@@ -8,6 +8,7 @@
     height: 80vh;
     display: grid;
     grid-template: repeat(5, 1fr) / repeat(7, 1fr);
+    overflow: scroll;
 }
 
 .day {

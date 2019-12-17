@@ -19,17 +19,20 @@
                     Int32 col = (day.Day - (7 * (row - 1)));
                     String off = day.DayOfWeek == DayOfWeek.Sunday ? "off" : "";
 
-                    <div class="day @off" style="grid-row: @row; grid-column: @col" data-date="@day.Day-@day.Month">
-                        <p class="text-center">@day.ToString("dddd") @day.Day</p>
-                        @if (day.DayOfWeek != DayOfWeek.Sunday && new DateTime(Model.FirstDayOfMonth.Year, Model.FirstDayOfMonth.Month, i).CompareTo(DateTime.Now) > 0)
-                        {
-                            <div class="rdv @(Model.DateCodeRendezVousTaken.Contains($"{day.Year}-{day.Month}-{day.Day}-9") ? "unavaible" : "")" data-code="@($"{day.Year}-{day.Month}-{day.Day}-9")" data-toggle="modal" data-target="#reservations">9h00</div>
-                            <div class="rdv @(Model.DateCodeRendezVousTaken.Contains($"{day.Year}-{day.Month}-{day.Day}-11") ? "unavaible" : "")" data-code="@($"{day.Year}-{day.Month}-{day.Day}-11")" data-toggle="modal" data-target="#reservations">11h00</div>
-                            <div class="rdv @(Model.DateCodeRendezVousTaken.Contains($"{day.Year}-{day.Month}-{day.Day}-13") ? "unavaible" : "")" data-code="@($"{day.Year}-{day.Month}-{day.Day}-13")" data-toggle="modal" data-target="#reservations">13h00</div>
-                            <div class="rdv @(Model.DateCodeRendezVousTaken.Contains($"{day.Year}-{day.Month}-{day.Day}-15") ? "unavaible" : "")" data-code="@($"{day.Year}-{day.Month}-{day.Day}-15")" data-toggle="modal" data-target="#reservations">15h00</div>
-                            <div class="rdv @(Model.DateCodeRendezVousTaken.Contains($"{day.Year}-{day.Month}-{day.Day}-17") ? "unavaible" : "")" data-code="@($"{day.Year}-{day.Month}-{day.Day}-17")" data-toggle="modal" data-target="#reservations">17h00</div>
-                        }
-                    </div>
+                        <div class="day @off" style="grid-row: @row; grid-column: @col" data-date="@day.Day-@day.Month">
+                            <p class="text-center">@day.ToString("dddd") @day.Day</p>
+                            @if (day.DayOfWeek != DayOfWeek.Sunday && new DateTime(Model.FirstDayOfMonth.Year, Model.FirstDayOfMonth.Month, i).CompareTo(DateTime.Now) > 0)
+                            {
+                                <div class="rdv @(Model.UnavaibleTimeCode.Contains($"{day.Year}-{day.Month}-{day.Day}-9") ? "unavaible" : "")" data-code="@($"{day.Year}-{day.Month}-{day.Day}-9")" data-toggle="modal" data-target="#reservations">9h00</div>
+                                <div class="rdv @(Model.UnavaibleTimeCode.Contains($"{day.Year}-{day.Month}-{day.Day}-10") ? "unavaible" : "")" data-code="@($"{day.Year}-{day.Month}-{day.Day}-10")" data-toggle="modal" data-target="#reservations">10h00</div>
+                                <div class="rdv @(Model.UnavaibleTimeCode.Contains($"{day.Year}-{day.Month}-{day.Day}-11") ? "unavaible" : "")" data-code="@($"{day.Year}-{day.Month}-{day.Day}-11")" data-toggle="modal" data-target="#reservations">11h00</div>
+                                <div class="rdv @(Model.UnavaibleTimeCode.Contains($"{day.Year}-{day.Month}-{day.Day}-14") ? "unavaible" : "")" data-code="@($"{day.Year}-{day.Month}-{day.Day}-14")" data-toggle="modal" data-target="#reservations">14h00</div>
+                                <div class="rdv @(Model.UnavaibleTimeCode.Contains($"{day.Year}-{day.Month}-{day.Day}-15") ? "unavaible" : "")" data-code="@($"{day.Year}-{day.Month}-{day.Day}-15")" data-toggle="modal" data-target="#reservations">15h00</div>
+                                <div class="rdv @(Model.UnavaibleTimeCode.Contains($"{day.Year}-{day.Month}-{day.Day}-16") ? "unavaible" : "")" data-code="@($"{day.Year}-{day.Month}-{day.Day}-16")" data-toggle="modal" data-target="#reservations">16h00</div>
+                                <div class="rdv @(Model.UnavaibleTimeCode.Contains($"{day.Year}-{day.Month}-{day.Day}-17") ? "unavaible" : "")" data-code="@($"{day.Year}-{day.Month}-{day.Day}-17")" data-toggle="modal" data-target="#reservations">17h00</div>
+                                <div class="rdv @(Model.UnavaibleTimeCode.Contains($"{day.Year}-{day.Month}-{day.Day}-18") ? "unavaible" : "")" data-code="@($"{day.Year}-{day.Month}-{day.Day}-18")" data-toggle="modal" data-target="#reservations">18h00</div>
+                            }
+                        </div>
 
                     day = day.AddDays(1);
                 }

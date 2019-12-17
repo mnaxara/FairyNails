@@ -66,6 +66,10 @@ namespace FairyNails.Service.Entity
 
                 entity.Property(e => e.DateRdv).HasColumnType("datetime");
 
+                entity.Property(e => e.PrixTotal).HasColumnType("decimal");
+
+                entity.Property(e => e.DureeTotal).HasColumnType("time");
+
                 entity.Property(e => e.IdClient)
                     .IsRequired()
                     .HasColumnName("Id_client")

@@ -26,7 +26,7 @@ namespace FairyNails.Service.RendezVousServices
         public List<T> GetWaitingRendezVous<T>() where T : IRendezVous, new();
         public bool AddRendezVous(String idUser, List<Int32> prestationsId, String dateCode);
         public bool RendezVousValidReject(Int32 idRdv, String command);
-        public List<String> GetTakenRendezVousTimeCode();
+        public List<String> GetUnavailableDateCode(Int32 month);
 
         #endregion
     }
