@@ -10,6 +10,11 @@
     <div class="col-12">
         <div id="rendezvous" class="row grid rdv">
             @{
+                if (Model.RendezVousOfDay.Count == 0)
+                {
+                    <p style="text-align: center; grid-column: 1 / 6;">Pas de Rendez vous aujourd'hui</p>
+                }
+
                 foreach (var rdv in Model.RendezVousOfDay)
                 {
                     if (rdv.Validate)

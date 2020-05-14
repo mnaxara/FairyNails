@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ProjectInfo xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.sonarsource.com/msbuild/integration/2015/1">
+  <ProjectName>NetExtension</ProjectName>
+  <ProjectLanguage>C#</ProjectLanguage>
+  <ProjectType>Product</ProjectType>
+  <ProjectGuid>2fe24403-8755-46ec-98c5-a196e081df63</ProjectGuid>
+  <FullPath>C:\Code\C#\FairyNails\sln\FairyNails\NetExtension\NetExtension.csproj</FullPath>
+  <IsExcluded>false</IsExcluded>
+  <AnalysisResults>
+    <AnalysisResult Id="FilesToAnalyze" Location="C:\Code\C#\FairyNails\.sonarqube\out\0\FilesToAnalyze.txt" />
+  </AnalysisResults>
+  <AnalysisSettings>
+    <Property Name="sonar.cs.roslyn.reportFilePath">C:\Code\C#\FairyNails\sln\FairyNails\NetExtension\bin\Debug\netcoreapp3.0\NetExtension.dll.RoslynCA.json|C:\Code\C#\FairyNails\sln\FairyNails\NetExtension\bin\Debug\netcoreapp3.0\NetExtension.dll.RoslynCA.json</Property>
+    <Property Name="sonar.cs.analyzer.projectOutPath">C:\Code\C#\FairyNails\.sonarqube\out\0</Property>
+  </AnalysisSettings>
+  <Configuration>Debug</Configuration>
+  <Platform>AnyCPU</Platform>
+  <TargetFramework>netcoreapp3.0</TargetFramework>
+</ProjectInfo>

@@ -29,7 +29,6 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap-datepicker.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap-datepicker.fr.min.js"></script>
     <script>
-
         let content = document.getElementById("content");
 
         /** content call**/
@@ -55,7 +54,7 @@
                 console.log('erreur');
             }
         }
-        
+
         /** Datepicker JS **/
         function datePickerSetup() {
             $('.datepicker').datepicker({
@@ -74,7 +73,7 @@
         };
 
         /** GetRendezVous for day pick ajax request **/
-        async function getRendezVous (e) {
+        async function getRendezVous(e) {
 
             let datechosen = document.getElementById("datechosen");
             let rendezvous = document.getElementById("rendezvous");
@@ -97,29 +96,29 @@
         }
 
         //** Accept/reject rdv ajax request **/
-        async function validRejectRdv (e) {
-                let command = this.dataset.command;
-                let rdv = this.dataset.rdv;
-                let waitingrdv = document.getElementById("waitingrdv");
-                let param = `idRdv=${rdv}&command=${command}`;
-                console.log(this,command, rdv, param);
+        async function validRejectRdv(e) {
+            let command = this.dataset.command;
+            let rdv = this.dataset.rdv;
+            let waitingrdv = document.getElementById("waitingrdv");
+            let param = `idRdv=${rdv}&command=${command}`;
+            console.log(this, command, rdv, param);
 
-                let response = await fetch('@Url.Action("AcceptRejectRendezVous", "Ajax")', {
-                    method: 'POST',
-                    headers: {
-                        "Content-Type": "application/x-www-form-urlencoded",
-                    },
-                    body: param,
-                });
-                let responseData = await response.text();
-                if (response.ok) {
-                    waitingrdv.innerHTML = responseData;
-                    AcceptRejectRendezVous()
-                }
-                else {
-                    console.log('erreur');
-                }
+            let response = await fetch('@Url.Action("AcceptRejectRendezVous", "Ajax")', {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
+                body: param,
+            });
+            let responseData = await response.text();
+            if (response.ok) {
+                waitingrdv.innerHTML = responseData;
+                AcceptRejectRendezVousListner()
             }
+            else {
+                console.log('erreur');
+            }
+        }
 
         /** EditPrestation form function **/
 
@@ -130,8 +129,8 @@
             let response = await fetch('@Url.Action("GetEditPrestationForm", "Ajax")', {
                 method: 'POST',
                 headers: {
-                        "Content-Type": "application/x-www-form-urlencoded",
-                    },
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
                 body: param,
             });
             let responseData = await response.text();
@@ -158,6 +157,5 @@
                 console.log('erreur');
             }
         }
-
     </script>
 }

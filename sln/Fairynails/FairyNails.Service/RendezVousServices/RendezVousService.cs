@@ -59,18 +59,45 @@ namespace FairyNails.Service.RendezVousServices
 
             if (command.Equals("accept"))
             {
-                rdv.Validate = true;
+                //Verifier qu'aucun rdv ne finisse ou commence pendant la plage horaire du rdv
+                DateTime startTime = rdv.DateRdv;
+                DateTime endTime = startTime.Add(rdv.DureeTotal);
+                TRendezVous conflict = _context.TRendezVous
+                    .Select(r => new
+                    {
+                        rdv = r,
+                        start = r.DateRdv,
+                        end = r.DateRdv.Add(r.DureeTotal)
+                    }
+                    )
+                    .Where(r => r.rdv.Validate == true)
+                    .ToList()
+                    .Where(r =>
+                    (r.start > startTime && r.start < endTime) ||
+                    (r.end > startTime && r.end < endTime) ||
+                    (r.start < startTime && r.end > endTime))
+                    .Select(r => r.rdv)
+                    .FirstOrDefault();                
+                //
+                if (conflict != null)
+                {
+                    return false;
+                }
+                else
+                {
+                    rdv.Validate = true;
+                    _context.SaveChanges();
+                    return true;
+                }
             }
             else if (command.Equals("reject"))
             {
                 DeleteRendezVous(rdv);
+                _context.SaveChanges();
+                return true;
             }
-
-            _context.SaveChanges();
-
-            return true;
+            return false;
         }
-
 
         public List<T> GetDayRendezVousWithPrestationName<T>(String shortDateFormat) where T : IRendezVous, new()
         {
@@ -135,7 +162,7 @@ namespace FairyNails.Service.RendezVousServices
 
             foreach (var time in rdvTime)
             {               
-                TimeSpan ModifiedDuration = time.Duration.Add(new TimeSpan(0, 30, 0));
+                TimeSpan ModifiedDuration = time.Duration.Add(new TimeSpan(0, 15, 0));
                 Double DurationHour = Math.Ceiling(ModifiedDuration.TotalHours);
                 for (int i = time.DateRdv.Hour; i < time.DateRdv.Hour+DurationHour; i++)
                 {

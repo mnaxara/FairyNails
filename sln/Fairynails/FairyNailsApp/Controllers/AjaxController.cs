@@ -77,6 +77,10 @@ namespace FairyNailsApp.Controllers
 
             List<AdminRendezVousViewModel> waitingRendezVous = _rendezVousService.GetWaitingRendezVous<AdminRendezVousViewModel>();
 
+            if (!status)
+            {
+                TempData["alert"] = "Vous avez déja un rendez vous prévu dans cet horaire";
+            }
             return PartialView("WaitingRendezVous", waitingRendezVous);
         }
 

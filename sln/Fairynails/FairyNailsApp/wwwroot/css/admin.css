@@ -42,3 +42,11 @@ h5, h6 {
     color: #bb4c7b;
     text-shadow: 5px 5px 1px #bf578259
 }
+
+.datepicker table tr td.today {
+    background-color: #f8e1fa;
+}
+
+.datepicker table tr td.active.active {
+    background-color: #bb4c7b;
+}

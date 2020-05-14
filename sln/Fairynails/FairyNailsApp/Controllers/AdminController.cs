@@ -52,4 +52,6 @@ namespace FairyNailsApp.Controllers
             return RedirectToAction("Index");
         }
     }
+
+    //TODO: Gallerie / Admin Gallerie / Admin Générale
 }

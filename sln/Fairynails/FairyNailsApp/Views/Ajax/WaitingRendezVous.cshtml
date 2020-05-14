@@ -1,5 +1,15 @@
 ﻿@model List<AdminRendezVousViewModel>
 @{
+    if (TempData["alert"] != null)
+    {
+        <div class="col-12" style="grid-column: 1/6">
+            @{
+            <p class="alert alert-danger">@TempData["alert"]</p>
+            }
+        </div>
+    }
+}
+@{
     foreach (var rdv in Model)
     {
         <div class="card" style="width: 18rem;">
