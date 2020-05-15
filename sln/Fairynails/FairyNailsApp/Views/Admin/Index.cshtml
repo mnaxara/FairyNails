@@ -14,6 +14,7 @@
     <ul class="panel d-flex justify-content-around">
         <li id="agenda" onclick="getContent(this)" class="py-3">Gérer les Rendez vous</li>
         <li id="prestations" onclick="getContent(this)" class="py-3">Gerer les Prestations</li>
+        <li id="clients" onclick="getContent(this)" class="py-3">Gerer les Clients</li>
         <li id="gallery" onclick="getContent(this)" class="py-3">Modifier la galerie</li>
         <li id="general" onclick="getContent(this)" class="py-3">Admin. générale</li>
     </ul>
@@ -28,134 +29,16 @@
 {
     <script src="~/lib/bootstrap/dist/js/bootstrap-datepicker.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap-datepicker.fr.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
     <script>
-        let content = document.getElementById("content");
-
-        /** content call**/
-        async function getContent(sender) {
-            let actions = {
-                agenda: '@Url.Action("GetRendezVousManagement", "Ajax")',
-                prestations: '@Url.Action("GetPrestationsManagement", "Ajax")'
-            }
-
-            let actionId = sender.getAttribute("id")
-            let action = actions[`${actionId}`]
-
-            let response = await fetch(action, {
-                method: 'POST'
-            });
-            let responseData = await response.text();
-            if (response.ok) {
-                content.innerHTML = responseData;
-                datePickerSetup()
-                AcceptRejectRendezVousListner()
-            }
-            else {
-                console.log('erreur');
-            }
-        }
-
-        /** Datepicker JS **/
-        function datePickerSetup() {
-            $('.datepicker').datepicker({
-                language: "fr",
-                todayBtn: true,
-                todayHighlight: true,
-                format: "dd/mm/yyyy",
-                autoclose: true
-            });
-        }
-
-        /** Accept / Reject listner **/
-        function AcceptRejectRendezVousListner() {
-            let validationBtn = document.querySelectorAll(".validationBtn");
-            validationBtn.forEach(element => element.addEventListener("click", validRejectRdv))
-        };
-
-        /** GetRendezVous for day pick ajax request **/
-        async function getRendezVous(e) {
-
-            let datechosen = document.getElementById("datechosen");
-            let rendezvous = document.getElementById("rendezvous");
-            let param = `date=${datechosen.value}`;
-
-            let response = await fetch('@Url.Action("GetDayRendezVous", "Ajax")', {
-                method: 'POST',
-                headers: {
-                    "Content-Type": "application/x-www-form-urlencoded",
-                },
-                body: param,
-            });
-            let responseData = await response.text();
-            if (response.ok) {
-                rendezvous.innerHTML = responseData;
-            }
-            else {
-                console.log('erreur');
-            }
-        }
-
-        //** Accept/reject rdv ajax request **/
-        async function validRejectRdv(e) {
-            let command = this.dataset.command;
-            let rdv = this.dataset.rdv;
-            let waitingrdv = document.getElementById("waitingrdv");
-            let param = `idRdv=${rdv}&command=${command}`;
-            console.log(this, command, rdv, param);
-
-            let response = await fetch('@Url.Action("AcceptRejectRendezVous", "Ajax")', {
-                method: 'POST',
-                headers: {
-                    "Content-Type": "application/x-www-form-urlencoded",
-                },
-                body: param,
-            });
-            let responseData = await response.text();
-            if (response.ok) {
-                waitingrdv.innerHTML = responseData;
-                AcceptRejectRendezVousListner()
-            }
-            else {
-                console.log('erreur');
-            }
-        }
-
-        /** EditPrestation form function **/
-
-        async function editPrestationForm(sender) {
-            let idPrestation = sender.dataset.prestation;
-            let param = `idPrestation=${idPrestation}`
-
-            let response = await fetch('@Url.Action("GetEditPrestationForm", "Ajax")', {
-                method: 'POST',
-                headers: {
-                    "Content-Type": "application/x-www-form-urlencoded",
-                },
-                body: param,
-            });
-            let responseData = await response.text();
-            if (response.ok) {
-                content.innerHTML = responseData;
-            }
-            else {
-                console.log('erreur');
-            }
-        }
-
-        /** AddPrestation form function **/
-
-        async function addPrestationForm() {
-
-            let response = await fetch('@Url.Action("GetAddPrestationForm", "Ajax")', {
-                method: 'POST'
-            });
-            let responseData = await response.text();
-            if (response.ok) {
-                content.innerHTML = responseData;
-            }
-            else {
-                console.log('erreur');
-            }
-        }
+        let agendaAction = '@Url.Action("GetRendezVousManagement", "Ajax")';
+        let prestationsAction = '@Url.Action("GetPrestationsManagement", "Ajax")';
+        let clientsAction = '@Url.Action("GetClientsManagement", "Ajax")';
+        let dayRdvAction = '@Url.Action("GetDayRendezVous", "Ajax")';
+        let acceptRejectAction= '@Url.Action("AcceptRejectRendezVous", "Ajax")';
+        let editPrestationFormAction = '@Url.Action("GetEditPrestationForm", "Ajax")';
+        let addPrestationFormAction = '@Url.Action("GetAddPrestationForm", "Ajax")';
+        let cancelRdvAction = '@Url.Action("CancelRendezVous", "Ajax")';
     </script>
+    <script src="~/js/admin.js"></script>
 }

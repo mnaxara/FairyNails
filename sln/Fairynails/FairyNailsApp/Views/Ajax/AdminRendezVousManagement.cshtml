@@ -12,7 +12,7 @@
             @{
                 if (Model.RendezVousOfDay.Count == 0)
                 {
-                    <p style="text-align: center; grid-column: 1 / 6;">Pas de Rendez vous aujourd'hui</p>
+                    <p style="text-align: center; grid-column: 1 / 6;">Pas de Rendez vous ce jour</p>
                 }
 
                 foreach (var rdv in Model.RendezVousOfDay)
@@ -22,7 +22,7 @@
 
                         <div class="card" style="width: 18rem;">
                             <div class="card-body">
-                                <h5 class="card-title">@rdv.IdClientNavigation.Name @rdv.IdClientNavigation.FirstName</h5>
+                                <a class="pink" href="@Url.Action("ClientDetails", "Admin", rdv.IdClient)"><h5 class="card-title font-weight-bold">@rdv.IdClientNavigation.Name @rdv.IdClientNavigation.FirstName</h5></a>
                                 <h6 class="card-subtitle mb-2 text-muted">@rdv.DateRdv.ToShortTimeString()</h6>
                                 <div class="card-text">
                                     <span>Prestations demandés :</span>
@@ -35,9 +35,12 @@
                                         }
                                     </ul>
                                 </div>
+                                <div class="card-footer">
+                                    <p>Temps estimé : @rdv.DureeTotal</p>
+                                </div>
                             </div>
-                            <div class="card-footer">
-                                <p>Temps estimé : @rdv.DureeTotal</p>
+                            <div class="card-footer d-flex justify-content-around mt-2">
+                                <button data-command="cancel" data-date="@rdv.DateRdv.ToString("dd'/'MM'/'yyyy")" data-rdv="@rdv.IdRdv" class="btn btn-danger cancelBtn">Annuler</button>
                             </div>
                         </div>
                     }

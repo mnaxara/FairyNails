@@ -85,6 +85,20 @@ namespace FairyNailsApp.Controllers
         }
 
         [HttpPost]
+        public IActionResult CancelRendezVous(Int32 idRdv, String date)
+        {
+            bool status = _rendezVousService.CancelRendezVous(idRdv);
+
+            List<AdminRendezVousViewModel> rendezVous = _rendezVousService.GetDayRendezVousWithPrestationName<AdminRendezVousViewModel>(date);
+
+            if (!status)
+            {
+                TempData["alert"] = "Le Rendez Vous n'existe pas";
+            }
+            return PartialView("GetDayRendezVous", rendezVous);
+        }
+
+        [HttpPost]
         public IActionResult GetAddPrestationForm()
         {
             return PartialView("AdminAddPrestationForm");

@@ -3,7 +3,7 @@
 @{
     if (Model.Count == 0)
     {
-        <p style="text-align: center; grid-column: 1 / 6;">Pas de Rendez vous aujourd'hui</p>
+        <p style="text-align: center; grid-column: 1 / 6;">Pas de Rendez vous ce jour</p>
     }
     foreach (var rdv in Model)
     {
@@ -25,9 +25,12 @@
                             }
                         </ul>
                     </div>
+                    <div class="card-footer">
+                        <p>Temps estimé : @rdv.DureeTotal</p>
+                    </div>
                 </div>
-                <div class="card-footer">
-                    <p>Temps estimé : @rdv.DureeTotal</p>
+                <div class="card-footer d-flex justify-content-around mt-2">
+                    <button data-command="cancel" data-date="@rdv.DateRdv.ToString("dd'/'MM'/'yyyy")" data-rdv="@rdv.IdRdv" class="btn btn-danger cancelBtn">Annuler</button>
                 </div>
             </div>
         }

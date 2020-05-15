@@ -59,7 +59,7 @@ namespace FairyNails.Service.RendezVousServices
 
             if (command.Equals("accept"))
             {
-                //Verifier qu'aucun rdv ne finisse ou commence pendant la plage horaire du rdv
+                //Verifie qu'aucun rdv ne finisse ou commence pendant la plage horaire du rdv
                 DateTime startTime = rdv.DateRdv;
                 DateTime endTime = startTime.Add(rdv.DureeTotal);
                 TRendezVous conflict = _context.TRendezVous
@@ -97,6 +97,21 @@ namespace FairyNails.Service.RendezVousServices
                 return true;
             }
             return false;
+        }
+
+        public bool CancelRendezVous(Int32 idRdv)
+        {
+            TRendezVous rdv = _context.TRendezVous.Find(idRdv);
+            if (rdv != null)
+            {
+                DeleteRendezVous(rdv);
+                _context.SaveChanges();
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         public List<T> GetDayRendezVousWithPrestationName<T>(String shortDateFormat) where T : IRendezVous, new()
