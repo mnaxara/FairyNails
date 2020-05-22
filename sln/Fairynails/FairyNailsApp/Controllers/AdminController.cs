@@ -7,9 +7,11 @@ using FairyNails.Service.RendezVousServices;
 using FairyNailsApp.Models.Admin;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FairyNailsApp.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class AdminController : Controller
     {
         private readonly RoleManager<IdentityRole> _rolemanager;
@@ -52,6 +54,9 @@ namespace FairyNailsApp.Controllers
             return RedirectToAction("Index");
         }
     }
+}
 
     //TODO: Gallerie / Admin Gallerie / Admin Générale
-}
+    //TODO: Envoi mail (reservation annulation, acceptation)
+    //TODO: Espace commentaire libre
+    //TODO: Numero tel?

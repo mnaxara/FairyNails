@@ -1,0 +1,52 @@
+﻿@model List<AdminClientViewModel>
+
+<table id="clientsTable" class="table table-striped table-bordered">
+    <thead>
+        <tr>
+            <th>Nom - Prénom</th>
+            <th>Téléphone</th>
+            <th>Mail</th>
+            <th>CA</th>
+            <th>Dernier Rendez-Vous</th>
+            <th>Prochain Rendez-Vous</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            foreach (var client in Model)
+            {
+                <tr>
+                    <td><a href="#" class="pink font-weight-bold">@client.User.Name @client.User.FirstName</a></td>
+                    <td>@client.User.PhoneNumber</td>
+                    <td>@client.User.Email</td>
+                    <td>@client.CA €</td>
+                    <td>
+                        @{
+                            if (client.LastRendezVous != null)
+                            {
+                                @client.LastRendezVous.DateRdv.ToString("dd/MM/yyyy HH:mm");
+                            }
+                            else
+                            {
+                                @Html.Raw("Aucun Rendez-Vous précédent");
+                            }
+                        }
+                    </td>
+                    <td>
+                        @{
+                            if (client.NextRendezVous != null)
+                            {
+                                @client.NextRendezVous.DateRdv.ToString("dd/MM/yyyy HH:mm");
+                            }
+                            else
+                            {
+                                @Html.Raw("Aucun Rendez-Vous prévu");
+                            }
+                        }
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+

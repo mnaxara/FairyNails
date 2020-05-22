@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using FairyNails.Service.ClientService;
 using FairyNails.Service.PrestationServices;
 using FairyNails.Service.RendezVousServices;
 using FairyNailsApp.Models.Admin;
 using FairyNailsApp.Models.RendezVous;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FairyNailsApp.Controllers
@@ -14,11 +16,13 @@ namespace FairyNailsApp.Controllers
     {
         private readonly IRendezVousService _rendezVousService;
         private readonly IPrestationService _prestationService;
+        private readonly IClientService _clientService;
 
-        public AjaxController(IRendezVousService rendezVousService, IPrestationService prestationService)
+        public AjaxController(IRendezVousService rendezVousService, IPrestationService prestationService, IClientService clientService)
         {
             this._rendezVousService = rendezVousService;
             this._prestationService = prestationService;
+            this._clientService = clientService;
         }
 
         [HttpPost]
@@ -33,6 +37,7 @@ namespace FairyNailsApp.Controllers
             return PartialView(rendezVous);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public IActionResult GetRendezVousManagement()
         {
@@ -40,12 +45,13 @@ namespace FairyNailsApp.Controllers
             {
                 TodayShortDate = DateTime.Now.ToShortDateString(),
                 RendezVousOfDay = _rendezVousService
-                    .GetDayRendezVousWithPrestationName<AdminRendezVousViewModel>(DateTime.Now.ToShortDateString()),
-                WaitingRendezVous = _rendezVousService.GetWaitingRendezVous<AdminRendezVousViewModel>()
+                    .GetDayRendezVousWithPrestationName<AdminRendezVousModel>(DateTime.Now.ToShortDateString()),
+                WaitingRendezVous = _rendezVousService.GetWaitingRendezVous<AdminRendezVousModel>()
             };
             return PartialView("AdminRendezVousManagement", model);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public IActionResult GetPrestationsManagement()
         {
@@ -54,6 +60,7 @@ namespace FairyNailsApp.Controllers
             return PartialView("AdminGetPrestationsManagement", model);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public IActionResult GetEditPrestationForm(Int32 idPrestation)
         {
@@ -62,20 +69,22 @@ namespace FairyNailsApp.Controllers
             return PartialView("AdminGetEditPrestationForm", model);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public IActionResult GetDayRendezVous(String date)
         {
-            List<AdminRendezVousViewModel> rendezVous = _rendezVousService.GetDayRendezVousWithPrestationName<AdminRendezVousViewModel>(date);
+            List<AdminRendezVousModel> rendezVous = _rendezVousService.GetDayRendezVousWithPrestationName<AdminRendezVousModel>(date);
 
             return PartialView(rendezVous);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public IActionResult AcceptRejectRendezVous(Int32 idRdv, String command)
         {
             bool status = _rendezVousService.RendezVousValidReject(idRdv, command);
 
-            List<AdminRendezVousViewModel> waitingRendezVous = _rendezVousService.GetWaitingRendezVous<AdminRendezVousViewModel>();
+            List<AdminRendezVousModel> waitingRendezVous = _rendezVousService.GetWaitingRendezVous<AdminRendezVousModel>();
 
             if (!status)
             {
@@ -84,12 +93,13 @@ namespace FairyNailsApp.Controllers
             return PartialView("WaitingRendezVous", waitingRendezVous);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public IActionResult CancelRendezVous(Int32 idRdv, String date)
         {
             bool status = _rendezVousService.CancelRendezVous(idRdv);
 
-            List<AdminRendezVousViewModel> rendezVous = _rendezVousService.GetDayRendezVousWithPrestationName<AdminRendezVousViewModel>(date);
+            List<AdminRendezVousModel> rendezVous = _rendezVousService.GetDayRendezVousWithPrestationName<AdminRendezVousModel>(date);
 
             if (!status)
             {
@@ -98,10 +108,19 @@ namespace FairyNailsApp.Controllers
             return PartialView("GetDayRendezVous", rendezVous);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public IActionResult GetAddPrestationForm()
         {
             return PartialView("AdminAddPrestationForm");
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPost]
+        public IActionResult GetClientsManagement()
+        {
+            List<AdminClientViewModel> clients = _clientService.GetAllClientWithAdminData<AdminClientViewModel, AdminRendezVousModel>();
+            return PartialView("AdminAllClients", clients);
         }
     }
 }

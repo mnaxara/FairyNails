@@ -19,6 +19,30 @@ async function getContent(sender) {
         datePickerSetup()
         AcceptRejectRendezVousListner()
         CancelRendezVousListner()
+        if (actionId == "clients") {
+            $('#clientsTable').DataTable(
+                {
+                    language: {
+                        "emptyTable": "Aucun Clients",
+                        "info": "Affiche _START_ à _END_ de _TOTAL_ clients",
+                        "infoEmpty": "Affiche 0 à 0 des 0 évènements",
+                        "infoFiltered": "(filtered from _MAX_ total entries)",
+                        "infoPostFix": "",
+                        "thousands": " ",
+                        "lengthMenu": "Afficher _MENU_ clients",
+                        "loadingRecords": "Chargement...",
+                        "processing": "Chargement...",
+                        "search": "Rechercher :",
+                        "zeroRecords": "Pas de client trouvés pour cette recherche",
+                        "paginate": {
+                            "first": "Premier",
+                            "last": "Dernier",
+                            "next": "Suivant",
+                            "previous": "Précédent"
+                        },
+                }
+            });
+        }
     }
     else {
         console.log('erreur');

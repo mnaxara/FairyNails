@@ -6,6 +6,7 @@
 {
     <link href="~/lib/bootstrap/dist/css/bootstrap-datepicker3.standalone.min.css" rel="stylesheet" />
     <link href="~/css/admin.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css">
 }
 
 <h1>Panel Administration</h1>
@@ -30,6 +31,8 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap-datepicker.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap-datepicker.fr.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
     <script>
         let agendaAction = '@Url.Action("GetRendezVousManagement", "Ajax")';
         let prestationsAction = '@Url.Action("GetPrestationsManagement", "Ajax")';
