@@ -35,7 +35,7 @@ namespace FairyNails.Service.RendezVousServices
 
         #region methods
 
-        public bool AddRendezVous(String idUser, List<Int32> prestationsId, String dateCode)
+        public bool AddRendezVous(String idUser, List<Int32> prestationsId, String dateCode, String comments)
         {
             if (prestationsId.Count == 0)
             {
@@ -44,7 +44,7 @@ namespace FairyNails.Service.RendezVousServices
 
             DateTime dateRdv = ConvertTimeCodeInDateTime(dateCode);
 
-            TRendezVous rdv = CreateRendezVous(dateRdv, idUser, prestationsId);
+            TRendezVous rdv = CreateRendezVous(dateRdv, idUser, prestationsId, comments);
 
             List<TRendezVousHasPrestation> link = CreateRendezVousPrestationsLink(prestationsId, rdv);
             _context.AddRange(link);
@@ -134,7 +134,8 @@ namespace FairyNails.Service.RendezVousServices
                     PrixTotal = rdv.PrixTotal,
                     Prestations = rdv.TRendezVousHasPrestation.Select(rdv => rdv.IdPrestationNavigation).Select(prest => prest.Nom).ToList(),
                     IdClientNavigation = rdv.IdClientNavigation,
-                    Validate = rdv.Validate
+                    Validate = rdv.Validate,
+                    Comments = rdv.Comments
                 })
                 .OrderBy(rdv => rdv.DateRdv)
                 .ToList();
@@ -153,6 +154,7 @@ namespace FairyNails.Service.RendezVousServices
                     Prestations = rdv.TRendezVousHasPrestation.Select(rdvhp => rdvhp.IdPrestationNavigation.Nom).ToList(),
                     IdRdv = rdv.IdRdv,
                     DureeTotal = rdv.DureeTotal,
+                    Comments = rdv.Comments,
                 })
                 .ToList();
 
@@ -195,13 +197,14 @@ namespace FairyNails.Service.RendezVousServices
             return true;
         }
 
-        private TRendezVous CreateRendezVous(DateTime dateRdv, String idUser, List<Int32> prestationsId)
+        private TRendezVous CreateRendezVous(DateTime dateRdv, String idUser, List<Int32> prestationsId, string comments)
         {
             TRendezVous created = new TRendezVous()
             {
                 DateRdv = dateRdv,
                 IdClientNavigation = _context.Users.Find(idUser),
                 Validate = false,
+                Comments = comments
             };
 
             foreach (var prestationId in prestationsId)

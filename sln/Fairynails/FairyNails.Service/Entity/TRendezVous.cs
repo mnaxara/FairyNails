@@ -17,6 +17,7 @@ namespace FairyNails.Service.Entity
         public decimal PrixTotal { get; set; }
         public TimeSpan DureeTotal { get; set; }
         public string IdClient { get; set; }
+        public string Comments { get; set; }
         public bool Validate { get; set; }
 
         public virtual ApplicationUser IdClientNavigation { get; set; }

@@ -14,6 +14,7 @@ namespace FairyNailsApp.Models.RendezVous
         public List<PrestationViewModel> Prestations { get; set; }
         public List<String> UnavaibleTimeCode { get; set; }
         public DateTime FirstDayOfMonth { get; set; }
+        public string Comments { get; set; }
 
     }
 }

@@ -4,7 +4,7 @@
     {
         <div class="col-12" style="grid-column: 1/6">
             @{
-            <p class="alert alert-danger">@TempData["alert"]</p>
+                <p class="alert alert-danger">@TempData["alert"]</p>
             }
         </div>
     }
@@ -13,11 +13,11 @@
     foreach (var rdv in Model)
     {
         <div class="card" style="width: 18rem;">
-            <div class="card-body">
+            <div class="card-body d-flex flex-column justify-content-between">
                 <h5 class="card-title">@rdv.IdClientNavigation.Name @rdv.IdClientNavigation.FirstName</h5>
                 <h6 class="card-subtitle mb-2 text-muted">@rdv.DateRdv.ToString("dd/MM/yyyy HH:mm")</h6>
                 <div class="card-text">
-                    <span>Prestations demandées :</span>
+                    <span>Prestations demandés :</span>
                     <ul class="list-group">
                         @{
                             foreach (var name in rdv.Prestations)
@@ -26,6 +26,11 @@
                             }
                         }
                     </ul>
+                </div>
+                <div>
+                    <p>Temps estimé : @rdv.DureeTotal</p>
+                    <p class="text-center pink">Commentaire :</p>
+                    <p>@Html.Raw(rdv.Comments)</p>
                 </div>
             </div>
             <div class="card-footer d-flex justify-content-around mt-2">

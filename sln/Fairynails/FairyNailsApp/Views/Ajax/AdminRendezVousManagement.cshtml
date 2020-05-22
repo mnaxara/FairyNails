@@ -9,43 +9,7 @@
 <div class="row">
     <div class="col-12">
         <div id="rendezvous" class="row grid rdv">
-            @{
-                if (Model.RendezVousOfDay.Count == 0)
-                {
-                    <p style="text-align: center; grid-column: 1 / 6;">Pas de Rendez vous ce jour</p>
-                }
-
-                foreach (var rdv in Model.RendezVousOfDay)
-                {
-                    if (rdv.Validate)
-                    {
-
-                        <div class="card" style="width: 18rem;">
-                            <div class="card-body">
-                                <a class="pink" href="@Url.Action("ClientDetails", "Admin", rdv.IdClient)"><h5 class="card-title font-weight-bold">@rdv.IdClientNavigation.Name @rdv.IdClientNavigation.FirstName</h5></a>
-                                <h6 class="card-subtitle mb-2 text-muted">@rdv.DateRdv.ToShortTimeString()</h6>
-                                <div class="card-text">
-                                    <span>Prestations demandés :</span>
-                                    <ul class="list-group">
-                                        @{
-                                            foreach (var name in rdv.Prestations)
-                                            {
-                                                <li class="list-group-item">@name</li>
-                                            }
-                                        }
-                                    </ul>
-                                </div>
-                                <div class="card-footer">
-                                    <p>Temps estimé : @rdv.DureeTotal</p>
-                                </div>
-                            </div>
-                            <div class="card-footer d-flex justify-content-around mt-2">
-                                <button data-command="cancel" data-date="@rdv.DateRdv.ToString("dd'/'MM'/'yyyy")" data-rdv="@rdv.IdRdv" class="btn btn-danger cancelBtn">Annuler</button>
-                            </div>
-                        </div>
-                    }
-                }
-            }
+            @await Html.PartialAsync("GetDayRendezVous", Model.RendezVousOfDay)
         </div>
     </div>
 </div>
@@ -56,34 +20,6 @@
 </div>
 <div id="waitingRendezVous" class="col-12">
     <div class="row grid rdv" id="waitingrdv">
-        @{
-            foreach (var rdv in Model.WaitingRendezVous)
-            {
-                <div class="card" style="width: 18rem;">
-                    <div class="card-body">
-                        <h5 class="card-title">@rdv.IdClientNavigation.Name @rdv.IdClientNavigation.FirstName</h5>
-                        <h6 class="card-subtitle mb-2 text-muted">@rdv.DateRdv</h6>
-                        <div class="card-text">
-                            <span>Prestations demandés :</span>
-                            <ul class="list-group">
-                                @{
-                                    foreach (var name in rdv.Prestations)
-                                    {
-                                        <li class="list-group-item">@name</li>
-                                    }
-                                }
-                            </ul>
-                        </div>
-                        <div class="card-footer">
-                            <p>Temps estimé : @rdv.DureeTotal</p>
-                        </div>
-                    </div>
-                    <div class="card-footer d-flex justify-content-around mt-2">
-                        <button data-command="accept" data-rdv="@rdv.IdRdv" class="btn btn-success validationBtn">Accepter</button>
-                        <button data-command="reject" data-rdv="@rdv.IdRdv" class="btn btn-danger validationBtn">Refuser</button>
-                    </div>
-                </div>
-            }
-        }
+        @await Html.PartialAsync("WaitingRendezVous", Model.WaitingRendezVous)
     </div>
 </div>

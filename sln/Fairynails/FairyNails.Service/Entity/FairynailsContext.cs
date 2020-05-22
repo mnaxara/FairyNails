@@ -77,6 +77,8 @@ namespace FairyNails.Service.Entity
 
                 entity.Property(e => e.Validate).HasColumnName("validate");
 
+                entity.Property(e => e.Comments).HasColumnName("comments");
+
                 entity.HasOne(d => d.IdClientNavigation)
                     .WithMany(p => p.TRendezVous)
                     .HasForeignKey(d => d.IdClient)

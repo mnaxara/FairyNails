@@ -9,6 +9,7 @@ using FairyNails.Service.PrestationServices;
 using FairyNailsApp.Models.RendezVous;
 using FairyNailsApp.Models.Prestation;
 using Microsoft.AspNetCore.Authorization;
+using System.Net;
 
 namespace FairyNailsApp.Controllers
 {
@@ -56,7 +57,7 @@ namespace FairyNailsApp.Controllers
                     }
                 }
 
-                bool addStatus = _rendezVousService.AddRendezVous(rdvData.IdClient, prestationChosenId, rdvData.DateCode);
+                bool addStatus = _rendezVousService.AddRendezVous(rdvData.IdClient, prestationChosenId, rdvData.DateCode, WebUtility.HtmlEncode(rdvData.Comments));
 
                 if (addStatus == true)
                 {

@@ -24,7 +24,7 @@ namespace FairyNails.Service.RendezVousServices
 
         public List<T> GetDayRendezVousWithPrestationName<T>(String shortDateFormat) where T : IRendezVous, new();
         public List<T> GetWaitingRendezVous<T>() where T : IRendezVous, new();
-        public bool AddRendezVous(String idUser, List<Int32> prestationsId, String dateCode);
+        public bool AddRendezVous(String idUser, List<Int32> prestationsId, String dateCode, String comments);
         public bool RendezVousValidReject(Int32 idRdv, String command);
         public bool CancelRendezVous(Int32 idRdv);
         public List<String> GetUnavailableDateCode(Int32 month);

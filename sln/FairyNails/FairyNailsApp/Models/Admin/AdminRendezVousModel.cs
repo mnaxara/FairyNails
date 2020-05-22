@@ -17,5 +17,6 @@ namespace FairyNailsApp.Models.Admin
         public ApplicationUser IdClientNavigation { get; set; }
         public List<string> Prestations { get; set; }
         public bool Validate { get; set; }
+        public string Comments { get; set; }
     }
 }

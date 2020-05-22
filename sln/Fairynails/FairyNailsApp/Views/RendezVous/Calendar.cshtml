@@ -90,59 +90,84 @@
                 </div>
                 <div class="modal-body">
                     <form asp-controller="RendezVous" asp-action="SaveRendezVous" method="post" id="inscription" class="p-4">
-                        <div class="form-group row">
-                            <label for="name" class="col-sm-2 col-form-label">Nom</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" id="name" name="name" readonly required value="@userName">
+                        <div class="row">
+                            <div class="col-4">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="form-group row">
+                                            <label for="name" class="col-sm-4 col-form-label">Nom</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control" id="name" name="name" readonly required value="@userName">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="firstname" class="col-sm-4 col-form-label">Prénom</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control" id="firstname" name="firstname" readonly required value="@userFirstName">
+                                            </div>
+                                        </div>
+                                        <input asp-for="IdClient" type="hidden" value="@userId">
+                                        <input id="dateCodeInput" type="hidden" asp-for="DateCode" />
+                                        <div class="form-group row">
+                                            <label for="date" class="col-sm-4 col-form-label">Date</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control" id="date" name="date" value="" readonly required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="form-group row">
+                                            <label for="comments" class="col-12 col-form-label text-center">Commentaires</label>
+                                            <div class="col-12">
+                                                <textarea name="comments" style="width:100%" rows="10"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-8">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <fieldset class="form-group">
+                                            <legend>Prestations souhaités</legend>
+                                            <div class="row" style="overflow-y:auto">
+                                                <table class="col-10 offset-1">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Prestation</th>
+                                                            <th>Prix</th>
+                                                            <th>Durée</th>
+                                                            <th>Selection</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @{
+                                                            for (int i = 0; i < Model.Prestations.Count; i++)
+                                                            {
+                                                                <tr>
+                                                                    <td>
+                                                                        <label class="form-check-label" asp-for="Prestations[i].IsChosen">@Model.Prestations[i].Nom</label>
+                                                                    </td>
+                                                                    <td>@Math.Round(Model.Prestations[i].Prix, 2) €</td>
+                                                                    <td>@Model.Prestations[i].Duree</td>
+                                                                    <td>
+                                                                        <input class="form-check-input" type="checkbox" asp-for="Prestations[i].IsChosen" />
+                                                                        <input type="hidden" asp-for="Prestations[i].IdPrestation" value="@Model.Prestations[i].IdPrestation" />
+                                                                    </td>
+                                                                </tr>
+
+                                                            }
+                                                        }
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div class="form-group row">
-                            <label for="firstname" class="col-sm-2 col-form-label">Prénom</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" id="firstname" name="firstname" readonly required value="@userFirstName">
-                            </div>
-                        </div>
-                        <input asp-for="IdClient" type="hidden" value="@userId">
-                        <input id="dateCodeInput" type="hidden" asp-for="DateCode" />
-                        <div class="form-group row">
-                            <label for="date" class="col-sm-2 col-form-label">Date</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" id="date" name="date" value="" readonly required>
-                            </div>
-                        </div>
-                        <fieldset class="form-group mt-5">
-                            <legend>Prestations souhaités</legend>
-                            <div class="row">
-                                <table class="col-10 offset-1">
-                                    <thead>
-                                        <tr>
-                                            <th>Prestation</th>
-                                            <th>Prix</th>
-                                            <th>Durée</th>
-                                            <th>Selection</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @{
-                                            for (int i = 0; i < Model.Prestations.Count; i++)
-                                            {
-                                                <tr>
-                                                    <td>
-                                                        <label class="form-check-label" asp-for="Prestations[i].IsChosen">@Model.Prestations[i].Nom</label>
-                                                    </td>
-                                                    <td>@Math.Round(Model.Prestations[i].Prix, 2) €</td>
-                                                    <td>@Model.Prestations[i].Duree</td>
-                                                    <td>
-                                                        <input class="form-check-input" type="checkbox" asp-for="Prestations[i].IsChosen" />
-                                                        <input type="hidden" asp-for="Prestations[i].IdPrestation" value="@Model.Prestations[i].IdPrestation" />
-                                                    </td>
-                                                </tr>                                                
-                                            }
-                                        }
-                                    </tbody>
-                                </table>
-                            </div>
-                        </fieldset>
                         <div class="form-group row">
                             <div class="col-12 d-flex justify-content-center">
                                 <button class="button-pink" type="submit" id="reservate">Réserver</button>
