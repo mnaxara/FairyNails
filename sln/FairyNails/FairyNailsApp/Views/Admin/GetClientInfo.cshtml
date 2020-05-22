@@ -1,0 +1,98 @@
+﻿@{
+    ViewData["Title"] = "Information Client";
+}
+@model AdminClientViewModel
+@{
+    var weeksSinceFirstRdv = (DateTime.Now - Model.DatesRendezVous.OrderBy(rdv => rdv).First()).TotalDays / 7;
+    var frequency = weeksSinceFirstRdv / Model.DatesRendezVous.Count;
+}
+
+<hr />
+<h1 class="font-weight-bold">@Model.User.Name @Model.User.FirstName</h1>
+<hr />
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <p class="text-center"><span class="font-weight-bold pink">E-mail : </span>@Model.User.Email <span class="font-weight-bold pink">Téléphone : </span>@Model.User.PhoneNumber</p>
+            <p class="text-center"><span class="font-weight-bold pink">Chiffre d'Affaire Global : </span>@Model.CA €</p>
+            @{
+                if (frequency > 0)
+                {
+                    <p class="text-center"><span class="font-weight-bold pink">Frequence Rendez-Vous moyenne : </span>@Math.Ceiling(frequency) semaines</p>
+                }
+            }
+            <div class="d-flex justify-content-between align-items-center">
+                <p class="font-weight-bold pink">Dernier Rendez Vous :</p>
+                @{
+                    if (Model.LastRendezVous != null)
+                    {
+                        <div class="card" style="width: 18rem;">
+                            <div class="card-body">
+                                <h5 class="card-subtitle mb-2 text-muted font-weight-bold">@Model.LastRendezVous.DateRdv.ToString("dd/MM/yyyy HH:mm")</h5>
+                                <div class="card-text">
+                                    <span>Prestations demandées :</span>
+                                    <ul class="list-group">
+                                        @{
+                                            foreach (var name in Model.LastRendezVous.Prestations)
+                                            {
+                                                <li class="list-group-item">@name</li>
+                                            }
+                                        }
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <p>Temps estimé : @Model.LastRendezVous.DureeTotal</p>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <p>Aucun rendez-vous passé</p>
+                    }
+                }
+                <p class="font-weight-bold pink">Prochain Rendez Vous :</p>
+                @{
+                    if (Model.NextRendezVous != null)
+                    {
+                        <div class="card" style="width: 18rem;">
+                            <div class="card-body">
+                                <h5 class="card-subtitle mb-2 text-muted font-weight-bold">@Model.NextRendezVous.DateRdv.ToString("dd/MM/yyyy HH:mm")</h5>
+                                <div class="card-text">
+                                    <span>Prestations demandées :</span>
+                                    <ul class="list-group">
+                                        @{
+                                            foreach (var name in Model.NextRendezVous.Prestations)
+                                            {
+                                                <li class="list-group-item">@name</li>
+                                            }
+                                        }
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <p>Temps estimé : @Model.NextRendezVous.DureeTotal</p>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <p>Pas de rendez-vous prévu</p>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+    <br />
+    <p><span class="pink font-weight-bold">Nombre de Rendez vous : </span>@Model.DatesRendezVous.Count</p>
+    <p class="pink font-weight-bold">Date des 10 derniers Rendez-vous :</p>
+    <ul>
+        @{
+            foreach (var dateRdv in Model.DatesRendezVous.OrderByDescending(rdv => rdv).Take(10))
+            {
+                <li>@dateRdv.ToString("dd/MM/yyyy HH:mm")</li>
+            }
+        }
+    </ul>
+</div>
+<hr />

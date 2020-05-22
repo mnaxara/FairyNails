@@ -6,6 +6,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -99,19 +100,61 @@ namespace FairyNails.Service.ClientService
             return clients;
         }
 
-        public T GetClientById<T>(String userId) where T : IClient, new()
+        public T GetClientById<T, U>(String userId) where T : IClient, new() where U : IRendezVous, new()
         {
-            var rendezVousClients = _context.TRendezVous
-                .Where(r => r.IdClient == userId)
-                .ToList();
-
-            return new T()
+            try
             {
-                User = rendezVousClients.Select(r => r.IdClientNavigation).First(),
-                DatesRendezVous = rendezVousClients.Select(r => r.DateRdv).ToList(),
-                LastRendezVous = rendezVousClients.OrderByDescending(r => r.DateRdv).Cast<IRendezVous>().FirstOrDefault(),
-                CA = Decimal.ToInt32(rendezVousClients.Aggregate(0m, (ca, r) => ca + r.PrixTotal))
-            };
+                var rendezVousClients = _context.TRendezVous
+                    .Include(rdv => rdv.IdClientNavigation)
+                    .Include(rdv => rdv.TRendezVousHasPrestation)
+                        .ThenInclude(rhp => rhp.IdPrestationNavigation)
+                    .Where(r => r.IdClient == userId)
+                    .ToList();
+
+                if (rendezVousClients.Count == 0)
+                {
+                    return default;
+                }
+
+                var client = new T()
+                {
+                    User = rendezVousClients.Select(r => r.IdClientNavigation).First(),
+                    DatesRendezVous = rendezVousClients.Select(r => r.DateRdv).ToList(),
+                    LastRendezVous = rendezVousClients.OrderByDescending(r => r.DateRdv)
+                    .Where(rdv => rdv.DateRdv < DateTime.Now)
+                    .Select(rdv => new U()
+                    {
+                        IdClient = rdv.IdClient,
+                        IdClientNavigation = rdv.IdClientNavigation,
+                        DateRdv = rdv.DateRdv,
+                        DureeTotal = rdv.DureeTotal,
+                        IdRdv = rdv.IdRdv,
+                        Prestations = rdv.TRendezVousHasPrestation.Select(rdv => rdv.IdPrestationNavigation).Select(prest => prest.Nom).ToList(),
+                        PrixTotal = rdv.PrixTotal,
+                        Validate = rdv.Validate
+                    }).FirstOrDefault(),
+                    NextRendezVous = rendezVousClients.OrderBy(r => r.DateRdv)
+                    .Where(rdv => rdv.DateRdv > DateTime.Now)
+                    .Select(rdv => new U()
+                    {
+                        IdClient = rdv.IdClient,
+                        IdClientNavigation = rdv.IdClientNavigation,
+                        DateRdv = rdv.DateRdv,
+                        DureeTotal = rdv.DureeTotal,
+                        IdRdv = rdv.IdRdv,
+                        Prestations = rdv.TRendezVousHasPrestation.Select(rdv => rdv.IdPrestationNavigation).Select(prest => prest.Nom).ToList(),
+                        PrixTotal = rdv.PrixTotal,
+                        Validate = rdv.Validate
+                    }).FirstOrDefault(),
+                    CA = Decimal.ToInt32(rendezVousClients.Aggregate(0m, (ca, r) => ca + r.PrixTotal))
+                };
+
+                return client;
+            }
+            catch (Exception)
+            {
+                throw new Exception("Erreur lors de la recherche");
+            }
         }
 
         #endregion

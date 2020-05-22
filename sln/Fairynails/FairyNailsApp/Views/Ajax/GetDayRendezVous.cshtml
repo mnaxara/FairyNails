@@ -12,10 +12,14 @@
 
             <div class="card" style="width: 18rem;">
                 <div class="card-body">
-                    <h5 class="card-title">@rdv.IdClientNavigation.Name @rdv.IdClientNavigation.FirstName</h5>
+                    <h5 class="card-title">
+                        <a href="@Url.Action("GetClientInfo", "Admin", new {clientId = rdv.IdClientNavigation.Id})" target="_blank" class="pink font-weight-bold">
+                            @rdv.IdClientNavigation.Name @rdv.IdClientNavigation.FirstName
+                        </a>
+                    </h5>
                     <h6 class="card-subtitle mb-2 text-muted">@rdv.DateRdv.ToShortTimeString()</h6>
                     <div class="card-text">
-                        <span>Prestations demandés :</span>
+                        <span>Prestations demandées :</span>
                         <ul class="list-group">
                             @{
                                 foreach (var name in rdv.Prestations)

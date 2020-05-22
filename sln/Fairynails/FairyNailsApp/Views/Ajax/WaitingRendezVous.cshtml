@@ -15,9 +15,9 @@
         <div class="card" style="width: 18rem;">
             <div class="card-body">
                 <h5 class="card-title">@rdv.IdClientNavigation.Name @rdv.IdClientNavigation.FirstName</h5>
-                <h6 class="card-subtitle mb-2 text-muted">@rdv.DateRdv</h6>
+                <h6 class="card-subtitle mb-2 text-muted">@rdv.DateRdv.ToString("dd/MM/yyyy HH:mm")</h6>
                 <div class="card-text">
-                    <span>Prestations demandés :</span>
+                    <span>Prestations demandées :</span>
                     <ul class="list-group">
                         @{
                             foreach (var name in rdv.Prestations)

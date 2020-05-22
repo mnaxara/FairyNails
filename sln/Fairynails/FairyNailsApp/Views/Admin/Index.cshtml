@@ -11,6 +11,19 @@
 
 <h1>Panel Administration</h1>
 
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            @{
+                if (ViewBag.Message != null)
+                {
+                    <p class="alert alert-danger">@ViewBag.Message</p>
+                }
+            }
+        </div>
+    </div>
+</div>
+
 <nav class="d-flex justify-content-center mt-5">
     <ul class="panel d-flex justify-content-around">
         <li id="agenda" onclick="getContent(this)" class="py-3">Gérer les Rendez vous</li>

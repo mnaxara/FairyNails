@@ -8,6 +8,7 @@ using FairyNailsApp.Models.Admin;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+using FairyNails.Service.ClientService;
 
 namespace FairyNailsApp.Controllers
 {
@@ -16,11 +17,13 @@ namespace FairyNailsApp.Controllers
     {
         private readonly RoleManager<IdentityRole> _rolemanager;
         private readonly IPrestationService _prestationService;
+        private readonly IClientService _clientService;
 
-        public AdminController(RoleManager<IdentityRole> rolemanager, IPrestationService prestationService)
+        public AdminController(RoleManager<IdentityRole> rolemanager, IPrestationService prestationService, IClientService clientService)
         {
             this._rolemanager = rolemanager;
             this._prestationService = prestationService;
+            this._clientService = clientService;
         }
 
         public IActionResult Index()
@@ -52,6 +55,27 @@ namespace FairyNailsApp.Controllers
         {
             _prestationService.AddPrestation(prestation);
             return RedirectToAction("Index");
+        }
+
+        [Route("/Client/{clientID}")]
+        public IActionResult GetClientInfo(String clientId)
+        {            
+            try
+            {
+                AdminClientViewModel client = _clientService.GetClientById<AdminClientViewModel, AdminRendezVousModel>(clientId);
+
+                if (client == null)
+                {
+                    ViewBag.Message = "Aucun Client trouvé avec cet Identifiant";
+                    return View("Index");
+                }
+                return View(client);
+            }
+            catch(Exception e)
+            {
+                ViewBag.Message = $"{e.Message}";
+                return View("Index");
+            }
         }
     }
 }

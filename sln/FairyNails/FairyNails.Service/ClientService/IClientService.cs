@@ -21,7 +21,7 @@ namespace FairyNails.Service.ClientService
 
         #region methods
         public List<T> GetAllClientWithAdminData<T, U>() where T : IClient, new() where U : IRendezVous, new();
-        public T GetClientById<T>(String userId) where T : IClient, new ();
+        public T GetClientById<T, U>(String userId) where T : IClient, new() where U : IRendezVous, new();
         #endregion
     }
 }
