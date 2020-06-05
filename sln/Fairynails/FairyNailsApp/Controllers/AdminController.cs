@@ -82,5 +82,4 @@ namespace FairyNailsApp.Controllers
 
     //TODO: Gallerie / Admin Gallerie / Admin Générale
     //TODO: Envoi mail (reservation annulation, acceptation)
-    //TODO: Espace commentaire libre
     //TODO: Numero tel?

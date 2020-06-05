@@ -40,8 +40,17 @@ async function getContent(sender) {
                             "next": "Suivant",
                             "previous": "Précédent"
                         },
+                    },
+                    buttons: [
+                        {
+                            text: 'Reload',
+                            action: function (e, dt, node, config) {
+                                dt.ajax.reload();
+                            }
+                        }
+                    ]
                 }
-            });
+            );
         }
     }
     else {
