@@ -1,4 +1,4 @@
-﻿@model AdminRendezVousManagementViewModel
+﻿@model FairyNails.Ressources.ViewMessage
 @{
     ViewData["Title"] = "Administration";
 }
@@ -11,18 +11,18 @@
 
 <h1>Panel Administration</h1>
 
-<div class="container">
-    <div class="row">
-        <div class="col-12">
-            @{
-                if (ViewBag.Message != null)
-                {
-                    <p class="alert alert-danger">@ViewBag.Message</p>
-                }
-            }
+@{
+    if (Model != null)
+    {
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <p class="alert alert-@Model.MessageType">@Model.Content</p>
+                </div>
+            </div>
         </div>
-    </div>
-</div>
+    }
+}
 
 <nav class="d-flex justify-content-center mt-5">
     <ul class="panel d-flex justify-content-around">

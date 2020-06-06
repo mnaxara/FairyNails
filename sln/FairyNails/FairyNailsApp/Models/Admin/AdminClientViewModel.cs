@@ -1,4 +1,5 @@
-﻿using FairyNails.Service;
+﻿using FairyNails.Ressources;
+using FairyNails.Service;
 using FairyNails.Service.ClientService;
 using FairyNails.Service.RendezVousServices;
 using System;
@@ -15,5 +16,6 @@ namespace FairyNailsApp.Models.Admin
         public IRendezVous LastRendezVous { get; set; }
         public IRendezVous NextRendezVous { get; set; }
         public int CA { get; set; }
+        public ViewMessage Message { get; set; }
     }
 }

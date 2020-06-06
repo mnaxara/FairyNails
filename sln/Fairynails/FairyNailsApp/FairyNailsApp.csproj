@@ -36,6 +36,7 @@
 
 
   <ItemGroup>
+    <ProjectReference Include="..\FairyNails.Ressources\FairyNails.Ressources.csproj" />
     <ProjectReference Include="..\FairyNails.Service\FairyNails.Service.csproj" />
     <ProjectReference Include="..\NetExtension\NetExtension.csproj" />
   </ItemGroup>

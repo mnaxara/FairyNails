@@ -7,13 +7,34 @@
     var frequency = weeksSinceFirstRdv / Model.DatesRendezVous.Count;
 }
 
+@section Styles
+{
+    <style>
+        #sendMail:hover {
+            color: #bb4c7b;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+    </style>
+}
+
 <hr />
-<h1 class="font-weight-bold">@Model.User.Name @Model.User.FirstName</h1>
+<div class="container-fluid">
+    <div class="row">
+        <div id="messageBox" class="col-12">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <h1 class="font-weight-bold">@Model.User.Name @Model.User.FirstName</h1>
+        </div>
+    </div>
+</div>
 <hr />
 <div class="container">
     <div class="row">
         <div class="col-12">
-            <p class="text-center"><span class="font-weight-bold pink">E-mail : </span>@Model.User.Email <span class="font-weight-bold pink">Téléphone : </span>@Model.User.PhoneNumber</p>
+            <p class="text-center"><span class="font-weight-bold pink">E-mail : </span><span id="sendMail" data-toggle="modal" data-target="#mailModal">@Model.User.Email</span> <span class="font-weight-bold pink">Téléphone : </span>@Model.User.PhoneNumber</p>
             <p class="text-center"><span class="font-weight-bold pink">Chiffre d'Affaire Global : </span>@Model.CA €</p>
             @{
                 if (frequency > 0)
@@ -96,3 +117,68 @@
     </ul>
 </div>
 <hr />
+
+@*Modal de mail*@
+<div class="modal fade" id="mailModal" tabindex="-1" role="dialog" aria-labelledby="mailTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="mailingTitle">Envoyer un Mail</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="mailForm" class="p-4">
+                    <div class="form-group">
+                        <label for="adress">Destinataire</label>
+                        <input type="email" class="form-control" id="adress" name="adress" value="@Model.User.Email" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="subject">Sujet</label>
+                        <input type="text" class="form-control" id="subject" name="subject">
+                    </div>
+                    <div class="form-group">
+                        <label for="content">Message</label>
+                        <textarea class="form-control" id="content" name="content" rows="5"></textarea>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-12 d-flex justify-content-center">
+                            <button class="button-pink" type="button" onclick="sendMail()">Envoyer</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script>
+        /** SendMail **/
+        let sendInfoMailAction = '@Url.Action("SendInfoEmail", "Ajax")';
+        async function sendMail() {
+            let messageBox = document.getElementById("messageBox");
+            let form = document.getElementById("mailForm");
+            let data = new FormData(form);
+            console.log(data);
+            let response = await fetch(sendInfoMailAction, {
+                method: 'POST',
+                body: data,
+            });
+            let responseData = await response.text();
+            if (response.ok) {
+                messageBox.innerHTML = `<p class="alert alert-success"> Mail envoyé avec succés</p>`;
+            }
+            else {
+                messageBox.innerHTML = `<p class="alert alert-danger">Erreur à l'envoi du mail</p>`;
+                console.log(response);
+            }
+            $('#mailModal').modal('hide')
+        }
+    </script>
+}

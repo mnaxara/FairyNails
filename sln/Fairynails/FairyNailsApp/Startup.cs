@@ -6,11 +6,12 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using FairyNails.Service.Entity;
-using FairyNailsApp.Models;
 using FairyNails.Service;
 using FairyNails.Service.RendezVousServices;
 using FairyNails.Service.PrestationServices;
 using FairyNails.Service.ClientService;
+using FairyNails.Service.MailerServices;
+using Microsoft.Extensions.Options;
 
 namespace FairyNailsApp
 {
@@ -43,6 +44,17 @@ namespace FairyNailsApp
             services.AddScoped<IRendezVousService,RendezVousService>();
             services.AddScoped<IPrestationService,PrestationService>();
             services.AddScoped<IClientService, ClientService>();
+            services.Configure<EmailConfig>(Configuration.GetSection("EmailConfig"));
+            services.AddTransient<IMailerService>(s => new MailerService(
+                new EmailConfig
+                {
+                    UserName = s.GetRequiredService<IOptions<EmailConfig>>().Value.UserName,
+                    Password = s.GetRequiredService<IOptions<EmailConfig>>().Value.Password,
+                    SmtpServer = s.GetRequiredService<IOptions<EmailConfig>>().Value.SmtpServer,
+                    SmtpPortNumber = s.GetRequiredService<IOptions<EmailConfig>>().Value.SmtpPortNumber,
+                    DefaultAdress = s.GetRequiredService<IOptions<EmailConfig>>().Value.DefaultAdress,
+                }
+                ));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

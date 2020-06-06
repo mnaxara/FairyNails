@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using FairyNails.Service.ClientService;
+using FairyNails.Service.MailerServices;
 using FairyNails.Service.PrestationServices;
 using FairyNails.Service.RendezVousServices;
 using FairyNailsApp.Models.Admin;
@@ -17,12 +18,18 @@ namespace FairyNailsApp.Controllers
         private readonly IRendezVousService _rendezVousService;
         private readonly IPrestationService _prestationService;
         private readonly IClientService _clientService;
+        private readonly IMailerService _mailerService;
 
-        public AjaxController(IRendezVousService rendezVousService, IPrestationService prestationService, IClientService clientService)
+        public AjaxController(
+            IRendezVousService rendezVousService,
+            IPrestationService prestationService,
+            IClientService clientService,
+            IMailerService mailerService)
         {
             this._rendezVousService = rendezVousService;
             this._prestationService = prestationService;
             this._clientService = clientService;
+            this._mailerService = mailerService;
         }
 
         [HttpPost]
@@ -121,6 +128,21 @@ namespace FairyNailsApp.Controllers
         {
             List<AdminClientViewModel> clients = _clientService.GetAllClientWithAdminData<AdminClientViewModel, AdminRendezVousModel>();
             return PartialView("AdminAllClients", clients);
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPost]
+        public async Task<IActionResult> SendInfoEmail(List<string> adress, string subject, string content)
+        {
+            var sendResult = await _mailerService.SendInfoEmailAsync(adress, subject, content);
+            if (sendResult)
+            {
+                return Ok();
+            }
+            else
+            {
+                return StatusCode(500);
+            }
         }
     }
 }
