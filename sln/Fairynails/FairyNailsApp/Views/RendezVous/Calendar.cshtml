@@ -24,13 +24,9 @@
     <div class="row">
         <div class="col-12">
             @{
-                if (TempData["success"] != null)
+                if (Model.Message.Content != null)
                 {
-                    <p class="alert alert-success">@TempData["success"]</p>
-                }
-                if (TempData["alert"] != null)
-                {
-                    <p class="alert alert-danger">@TempData["alert"]</p>
+                    <p class="alert alert-@Model.Message.MessageType">@Model.Message.Content</p>
                 }
             }
         </div>

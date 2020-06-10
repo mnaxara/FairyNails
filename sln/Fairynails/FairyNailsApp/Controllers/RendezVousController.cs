@@ -10,6 +10,7 @@ using FairyNailsApp.Models.RendezVous;
 using FairyNailsApp.Models.Prestation;
 using Microsoft.AspNetCore.Authorization;
 using System.Net;
+using FairyNails.Ressources;
 
 namespace FairyNailsApp.Controllers
 {
@@ -19,7 +20,7 @@ namespace FairyNailsApp.Controllers
         private readonly IRendezVousService _rendezVousService;
         private readonly IPrestationService _prestationService;
 
-        public RendezVousController (IRendezVousService rendezVousService, IPrestationService prestationService)
+        public RendezVousController(IRendezVousService rendezVousService, IPrestationService prestationService)
         {
             this._rendezVousService = rendezVousService;
             this._prestationService = prestationService;
@@ -30,49 +31,60 @@ namespace FairyNailsApp.Controllers
             return RedirectToAction("Calendar");
         }
 
-        public IActionResult Calendar()
+        public IActionResult Calendar(ViewMessage message = null)
         {
 
             CalendarViewModel model = new CalendarViewModel()
             {
                 Prestations = _prestationService.GetAllPrestations<PrestationViewModel>(),
                 UnavaibleTimeCode = _rendezVousService.GetUnavailableDateCode(DateTime.Now.Month),
-                FirstDayOfMonth = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1)
+                FirstDayOfMonth = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1),
+                Message = message
             };
-   
+
             return View(model);
         }
 
         [HttpPost]
         public IActionResult SaveRendezVous(CalendarViewModel rdvData)
-        { 
-            if(ModelState.IsValid)
+        {
+            ViewMessage message = new ViewMessage();
+            if (ModelState.IsValid)
             {
                 List<Int32> prestationChosenId = new List<Int32>();
                 foreach (var prestation in rdvData.Prestations)
                 {
-                    if(prestation.IsChosen)
+                    if (prestation.IsChosen)
                     {
                         prestationChosenId.Add(prestation.IdPrestation);
                     }
                 }
-
-                bool addStatus = _rendezVousService.AddRendezVous(rdvData.IdClient, prestationChosenId, rdvData.DateCode, WebUtility.HtmlEncode(rdvData.Comments));
-
-                if (addStatus == true)
+                if (prestationChosenId.Count > 0)
                 {
-                    TempData["success"] = "Merci, je vous confirme notre rendez vous au plus vite !";
+                    try
+                    {
+                        _rendezVousService.AddRendezVous(rdvData.IdClient, prestationChosenId, rdvData.DateCode, WebUtility.HtmlEncode(rdvData.Comments));
+                        message.MessageType = "success";
+                        message.Content = "Merci, je vous confirme notre rendez vous au plus vite !";
+                    }
+                    catch (Exception e)
+                    {
+                        message.MessageType = "danger";
+                        message.Content = e.Message;
+                    }
                 }
                 else
                 {
-                    TempData["alert"] = "Merci de choisir au moins une prestation";
+                    message.MessageType = "danger";
+                    message.Content = "Vous devez choisir au moins une prestations";
                 }
             }
             else
             {
-                TempData["alert"] = "Erreur lors de la prise du rendez vous, veuillez reessayer";
+                message.MessageType = "alert";
+                message.Content = "Paramètres invalides";
             }
-            return RedirectToAction("Calendar");
+            return RedirectToAction("Calendar", message);
         }
     }
 }

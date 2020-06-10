@@ -15,7 +15,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "10-Extension", "10-Extensio
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetExtension", "NetExtension\NetExtension.csproj", "{2FE24403-8755-46EC-98C5-A196E081DF63}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FairyNails.Ressources", "FairyNails.Ressources\FairyNails.Ressources.csproj", "{DDA61BFB-E5BD-4ECA-BDA5-7080C3CE9302}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FairyNails.Ressources", "FairyNails.Ressources\FairyNails.Ressources.csproj", "{DDA61BFB-E5BD-4ECA-BDA5-7080C3CE9302}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "03-Ressources", "03-Ressources", "{914CCDC2-D600-4BFE-8A12-EF17A8765D5D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FairyNails.Services.Tests", "FairyNails.Services.Tests\FairyNails.Services.Tests.csproj", "{BDF76139-A2AE-49EA-9F80-3F14707FEDDC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +43,10 @@ Global
 		{DDA61BFB-E5BD-4ECA-BDA5-7080C3CE9302}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DDA61BFB-E5BD-4ECA-BDA5-7080C3CE9302}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DDA61BFB-E5BD-4ECA-BDA5-7080C3CE9302}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BDF76139-A2AE-49EA-9F80-3F14707FEDDC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BDF76139-A2AE-49EA-9F80-3F14707FEDDC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BDF76139-A2AE-49EA-9F80-3F14707FEDDC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BDF76139-A2AE-49EA-9F80-3F14707FEDDC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -47,7 +55,8 @@ Global
 		{5211F0D2-87DB-4CD5-92FD-5FAAD0720ED2} = {0799DE1F-CA04-4253-9516-D5D3C517FE83}
 		{A458A0F9-D914-4BEB-9723-CA97D3640DE5} = {C44C3036-1519-44AB-B37F-80F193A7B5AA}
 		{2FE24403-8755-46EC-98C5-A196E081DF63} = {143CFB70-6E2A-4410-90A1-5D56F3D9523A}
-		{DDA61BFB-E5BD-4ECA-BDA5-7080C3CE9302} = {0799DE1F-CA04-4253-9516-D5D3C517FE83}
+		{DDA61BFB-E5BD-4ECA-BDA5-7080C3CE9302} = {914CCDC2-D600-4BFE-8A12-EF17A8765D5D}
+		{BDF76139-A2AE-49EA-9F80-3F14707FEDDC} = {C44C3036-1519-44AB-B37F-80F193A7B5AA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {88CA034E-AACF-4071-8769-8B87A5DBE9AF}

@@ -22,7 +22,7 @@ namespace FairyNails.Service.RendezVousServices
         #endregion
 
         #region properties
-
+        private readonly TimeSpan _timeBetweenRdv = TimeSpan.FromMinutes(15);
         #endregion
 
         #region constructors
@@ -37,18 +37,20 @@ namespace FairyNails.Service.RendezVousServices
 
         public bool AddRendezVous(String idUser, List<Int32> prestationsId, String dateCode, String comments)
         {
-            if (prestationsId.Count == 0)
+            try
             {
-                return false;
+                DateTime dateRdv = ConvertTimeCodeInDateTime(dateCode);
+
+                TRendezVous rdv = CreateRendezVous(dateRdv, idUser, prestationsId, comments);
+
+                List<TRendezVousHasPrestation> link = CreateRendezVousPrestationsLink(prestationsId, rdv);
+                _context.AddRange(link);
+                _context.SaveChanges();
             }
-
-            DateTime dateRdv = ConvertTimeCodeInDateTime(dateCode);
-
-            TRendezVous rdv = CreateRendezVous(dateRdv, idUser, prestationsId, comments);
-
-            List<TRendezVousHasPrestation> link = CreateRendezVousPrestationsLink(prestationsId, rdv);
-            _context.AddRange(link);
-            _context.SaveChanges();
+            catch(Exception e)
+            {
+                throw e;
+            }
 
             return true;
         }
@@ -163,38 +165,50 @@ namespace FairyNails.Service.RendezVousServices
 
         public List<String> GetUnavailableDateCode(Int32 month)
         {
-            // TODO: Renvoyer les dateCode disponible par mois
-
-            List<String> UnavaibleDateCode = new List<String>();
-
-            List<UnavailableTime> rdvTime = _context.TRendezVous
+            List<ValidRendezVousDateAndDuration> rdvDate = _context.TRendezVous
                 .Where(rdv => rdv.Validate == true)
                 .Where(rdv => rdv.DateRdv.Month == month)
-                .Select(rdv => new UnavailableTime()
+                .Select(rdv => new ValidRendezVousDateAndDuration()
                 {
                     DateRdv = rdv.DateRdv,
                     Duration = rdv.DureeTotal
                 })
                 .ToList();
+            List<String> unavaibleDateCode =  AddTimeBetweenRdv(rdvDate);
 
-            foreach (var time in rdvTime)
-            {               
-                TimeSpan ModifiedDuration = time.Duration.Add(new TimeSpan(0, 15, 0));
-                Double DurationHour = Math.Ceiling(ModifiedDuration.TotalHours);
-                for (int i = time.DateRdv.Hour; i < time.DateRdv.Hour+DurationHour; i++)
-                {
-                    String DateCode = $"{time.DateRdv.Year}-{ time.DateRdv.Month}-{ time.DateRdv.Day}-{i}";
-                    UnavaibleDateCode.Add(DateCode);
-                }
-            }
-
-            return UnavaibleDateCode;
+            return unavaibleDateCode;
         }
 
-        private bool DeleteRendezVous(TRendezVous rdv)
+        /// <summary>
+        /// Allow to add fixed time between 2 rendez vous
+        /// </summary>
+        /// <param name="rdvDate">A list of unavailable time (DateRdv + Rdv duration)</param>
+        /// <returns>List of date code which are unavailable</returns>
+        public List<String> AddTimeBetweenRdv(List<ValidRendezVousDateAndDuration> rdvDate)
         {
-            _context.Remove(rdv);
-            return true;
+            List<String> unavaibleDateCode = new List<String>();
+            foreach (var time in rdvDate)
+            {
+                TimeSpan ModifiedDuration = time.Duration.Add(_timeBetweenRdv);
+                Double DurationHour = Math.Ceiling(ModifiedDuration.TotalHours);
+                for (int i = time.DateRdv.Hour; i < time.DateRdv.Hour + DurationHour; i++)
+                {
+                    String DateCode = $"{time.DateRdv.Year}-{ time.DateRdv.Month}-{ time.DateRdv.Day}-{i}";
+                    unavaibleDateCode.Add(DateCode);
+                }
+            }
+            return unavaibleDateCode;
+        }
+
+        public DateTime ConvertTimeCodeInDateTime(String dateCode)
+        {
+            String[] dateCodeSplit = dateCode.Split('-');
+            return new DateTime(
+                Int32.Parse(dateCodeSplit[0]),
+                Int32.Parse(dateCodeSplit[1]),
+                Int32.Parse(dateCodeSplit[2]),
+                Int32.Parse(dateCodeSplit[3]),
+                0, 0);
         }
 
         private TRendezVous CreateRendezVous(DateTime dateRdv, String idUser, List<Int32> prestationsId, string comments)
@@ -217,6 +231,12 @@ namespace FairyNails.Service.RendezVousServices
             return created;
         }
 
+        private bool DeleteRendezVous(TRendezVous rdv)
+        {
+            _context.Remove(rdv);
+            return true;
+        }
+
         private List<TRendezVousHasPrestation> CreateRendezVousPrestationsLink(List<Int32> prestationsId, TRendezVous rdv)
         {
             List<TRendezVousHasPrestation> link = new List<TRendezVousHasPrestation>();
@@ -229,21 +249,10 @@ namespace FairyNails.Service.RendezVousServices
             return link;
         }
 
-        private DateTime ConvertTimeCodeInDateTime(String dateCode)
-        {
-            String[] dateCodeSplit = dateCode.Split('-');
-            return new DateTime(
-                Int32.Parse(dateCodeSplit[0]),
-                Int32.Parse(dateCodeSplit[1]),
-                Int32.Parse(dateCodeSplit[2]),
-                Int32.Parse(dateCodeSplit[3]),
-                0, 0);
-        }
-
         #endregion
 
         #region projection class
-        public class UnavailableTime
+        public class ValidRendezVousDateAndDuration
         {
             public DateTime DateRdv { get; set; }
             public TimeSpan Duration { get; set;}
