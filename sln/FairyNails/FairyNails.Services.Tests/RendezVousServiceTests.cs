@@ -66,9 +66,9 @@ namespace FairyNails.Services.Tests
             //----Expected parameter
             DateTime dateCodeTransform = new DateTime(2020, 02, 03, 09, 00, 00);
             //----Mock & Setup Context
-            var contextMock = SetupAddRendezVousContextMock(fakePrestation);
+            var contextStub = Mock.Of<FairynailsContext>();
             //----Service
-            var rendezVousService = new RendezVousService(contextMock);
+            var rendezVousService = new RendezVousService(contextStub);
             //Act
             var result = rendezVousService.ConvertTimeCodeInDateTime(dateCode);
             //Assert
@@ -96,9 +96,9 @@ namespace FairyNails.Services.Tests
                 "2020-2-3-12"
             };
             //----Mock & Setup Context
-            var contextMock = SetupAddRendezVousContextMock(fakePrestation);
+            var contextStub = Mock.Of<FairynailsContext>();
             //----Service
-            var rendezVousService = new RendezVousService(contextMock);
+            var rendezVousService = new RendezVousService(contextStub);
             //Act
             var result = rendezVousService.AddTimeBetweenRdv(rdvList);
             //Assert
@@ -113,9 +113,9 @@ namespace FairyNails.Services.Tests
             //----Expected Parameter
             var dateCodes = new List<string>();
             //----Mock & Setup Context
-            var contextMock = SetupAddRendezVousContextMock(fakePrestation);
+            var contextStub = Mock.Of<FairynailsContext>();
             //----Service
-            var rendezVousService = new RendezVousService(contextMock);
+            var rendezVousService = new RendezVousService(contextStub);
             //Act
             var result = rendezVousService.AddTimeBetweenRdv(rdvList);
             //Assert
